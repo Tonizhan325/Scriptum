@@ -1,44 +1,72 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Scriptum</title>
-    <script type="importmap"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Scriptum.styles.css" asp-append-version="true" />
+
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-scriptum">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Scriptum</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- LOGO -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/logoScriptum.png" alt="Scriptum" />
+                    <div>
+                        <div>SCRIPTUM</div>
+                        <small class="text-light opacity-75">Biblioteca digital colaborativa</small>
+                    </div>
+                </a>
+
+                <!-- TOGGLER -->
+                <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+
+                    <!-- LINKS CENTRALES -->
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" href="#">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" href="#">Catálogo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">SecciónPrueba</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+
+                    <!-- BUSCADOR + AVATAR -->
+                    <div class="d-flex align-items-center">
+                        <div class="search-wrapper">
+                            <input class="form-control search-input" type="search" placeholder="Search" />
+                        </div>
+
+                        <partial name="_LoginPartial" />
+                        <div class="avatar">
+                            👤
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+
+    <div class="container flex-fill">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted mt-auto">
         <div class="container">
             &copy; 2026 - Scriptum - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
