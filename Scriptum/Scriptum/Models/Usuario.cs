@@ -15,7 +15,6 @@ namespace Scriptum.Models
         [Display(Name = "Fecha de registro")]
         public DateTime fechaRegistro { get; set; }
         public string Estado { get; set; }
-        [Display(Name = "Id rol")]
-        public int IdRol { get; set; }
+
     }
 }

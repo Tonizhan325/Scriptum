@@ -1,12 +1,11 @@
 ﻿@model Scriptum.Models.Libro
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Gestión de libros";
 }
 
-<h1>Create</h1>
+<h1>Crear libro</h1>
 
-<h4>Libro</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -63,14 +62,14 @@
                 <span asp-validation-for="IdGenero" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {
