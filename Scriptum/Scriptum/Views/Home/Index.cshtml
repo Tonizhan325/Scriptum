@@ -2,6 +2,23 @@
     ViewData["Title"] = "Scriptum - Inicio";
 }
 
+<style>
+
+    .tarjeta-explorar {
+        width: 25%;
+        text-decoration: none;
+        color: inherit;
+    }
+
+        .tarjeta-explorar section {
+            transition: all 0.4s ease;
+        }
+
+        .tarjeta-explorar:hover section {
+            transform: translateY(-5px);
+        }
+
+</style>
 
 <div style="position: relative; width: 100%; overflow: hidden; display: flex; justify-content: center;">
 
@@ -22,29 +39,33 @@
 <main>
     <div id="explorar" style="display:flex; align-items: center; justify-content:center; gap: 1rem; margin-top: 2.5rem;">
 
-        <section style="width:25%; height:150px; display:flex; align-items:center; justify-content:center;
+        <a href="~/Catalogo/Index" class="tarjeta-explorar">
+            <section style="height:150px; display:flex; align-items:center; justify-content:center;
                         background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/libros.jpg');
                         background-size: cover; background-position: center; border-radius: 8px;">
             <h2 style="color: white; text-align: center;">Libros</h2>
-        </section>
+        </section></a>
 
-        <section style="width:25%; height:150px; display:flex; align-items:center; justify-content:center;
+        <a href="~/Catalogo/Index" class="tarjeta-explorar">
+            <section style="height:150px; display:flex; align-items:center; justify-content:center;
                         background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/comics.jpg');
                         background-size: cover; background-position: center; border-radius: 8px;">
             <h2 style="color: white; text-align: center;">Cómics/Mangas</h2>
-        </section>
+        </section></a>
 
-        <section style="width:25%; height:150px; display:flex; align-items:center; justify-content:center;
+        <a href="~/Catalogo/Index" class="tarjeta-explorar">
+            <section style="height:150px; display:flex; align-items:center; justify-content:center;
                         background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/revistas.jpg');
                         background-size: cover; background-position: center; border-radius: 8px;">
             <h2 style="color: white; text-align: center;">Revistas</h2>
-        </section>
+        </section></a>
 
-        <section style="width:25%; height:150px; display:flex; align-items:center; justify-content:center;
+        <a href="~/Catalogo/Index" class="tarjeta-explorar">
+            <section style="height:150px; display:flex; align-items:center; justify-content:center;
                         background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/articulos.jpg');
                         background-size: cover; background-position: center; border-radius: 8px;">
             <h2 style="color: white; text-align: center;">Artículos científicos</h2>
-        </section>
+        </section></a>
  
     </div>
 </main>
