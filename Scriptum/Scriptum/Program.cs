@@ -1,24 +1,38 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Scriptum;
 using Scriptum.Data;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
-// Registrar el contexto de la base de datos
-builder.Services.AddDbContext<ScriptumContext>(options =>
- options.UseSqlServer(connectionString));
+    options.UseNpgsql(connectionString));
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// Configuración de los servicios de ASP.NET Core Identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings. Configuración de las características de las contraseñas
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    //options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireNonAlphanumeric = false;
+    //options.Password.RequireUppercase = true;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+
 
 var app = builder.Build();
 
@@ -48,5 +62,13 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
    .WithStaticAssets();
+
+// Crear los roles y el administrador predeterminados
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.InitializeAsync(services).Wait();
+}
 
 app.Run();

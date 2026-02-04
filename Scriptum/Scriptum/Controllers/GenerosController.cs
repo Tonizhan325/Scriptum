@@ -12,9 +12,9 @@ namespace Scriptum.Controllers
 {
     public class GenerosController : Controller
     {
-        private readonly ScriptumContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public GenerosController(ScriptumContext context)
+        public GenerosController(ApplicationDbContext context)
         {
             _context = context;
         }

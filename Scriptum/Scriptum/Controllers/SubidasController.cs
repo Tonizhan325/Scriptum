@@ -12,9 +12,9 @@ namespace Scriptum.Controllers
 {
     public class SubidasController : Controller
     {
-        private readonly ScriptumContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public SubidasController(ScriptumContext context)
+        public SubidasController(ApplicationDbContext context)
         {
             _context = context;
         }
