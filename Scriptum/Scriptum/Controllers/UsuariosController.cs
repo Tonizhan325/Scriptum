@@ -12,9 +12,9 @@ namespace Scriptum.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly ScriptumContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UsuariosController(ScriptumContext context)
+        public UsuariosController(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -12,9 +12,9 @@ namespace Scriptum.Controllers
 {
     public class LibrosController : Controller
     {
-        private readonly ScriptumContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LibrosController(ScriptumContext context)
+        public LibrosController(ApplicationDbContext context)
         {
             _context = context;
         }
