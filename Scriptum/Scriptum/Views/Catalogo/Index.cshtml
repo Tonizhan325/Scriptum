@@ -1,7 +1,55 @@
-﻿
+﻿@model CatalogoViewModel
+
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    aside a {
+        color: white;
+        text-decoration: none;
+        margin: 0.5rem 0;
+    }
+</style>
+
+<!--Esto de abajo habrá que cambiarlo por un grid seguramente para evitar problemas de ancho de contenido-->
+<aside style="position:fixed; display:flex; right:0; top: 30%; background:#2C3E50; flex-direction:column; justify-content:space-between;
+ padding: 2rem;">
+    
+    <h3>Filtrar por género</h3>
+
+    <table>
+    @foreach (var item in Model.Generos)
+    {
+        <tr>
+            <td>@item.Nombre</td>
+        </tr>
+    }
+    </table>
+
+</aside>
 
 <h1>Catálogo</h1>
+
+<!--Esto es pura apariencia, hay que cambiarlo-->
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Library</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+</nav>
+
+<section>
+    <h2>Libros</h2>
+
+    @foreach (var libro in Model.Libros)
+    {
+        <div class="libro">
+            <h4>@libro.Titulo</h4>
+            <span>@libro.IdGenero</span>
+        </div>
+    }
+</section>
+
 
