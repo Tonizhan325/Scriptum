@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Scriptum.Controllers
 {
-    [Authorize(Roles="Usuario")]
+    //[Authorize(Roles="Usuario")]
     public class VerLibrosController : Controller
     {
         public IActionResult Index()
