@@ -22,9 +22,23 @@ namespace Scriptum.Controllers
         }
 
         // GET: Libros
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string strCadenaBusqueda)
         {
-            return View(await _context.Libros.ToListAsync());
+
+            ViewData["BusquedaActual"] = strCadenaBusqueda;
+            // Cargar datos de los avisos
+            var libros = _context.Libros.AsQueryable();
+            // Ordenar los avisos de forma descendente por FechaAviso
+            libros = libros.OrderByDescending(s => s.FechaSubida);
+
+            if (!String.IsNullOrEmpty(strCadenaBusqueda))
+            {
+                libros = libros.Where(s => s.Titulo.Contains(strCadenaBusqueda));
+            }
+
+            return View(await libros.AsNoTracking().ToListAsync());
+
+            //return View(await _context.Libros.ToListAsync());
         }
 
         // GET: Libros/Details/5

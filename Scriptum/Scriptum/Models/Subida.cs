@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scriptum.Models
 {
@@ -10,6 +11,7 @@ namespace Scriptum.Models
         public int IdUsuario { get; set; }
 
         [Display(Name = "Fecha de subida")]
+        [Column(TypeName = "timestamp without time zone")]
         public DateTime FechaSubida { get; set; }
 
         public string? URL { get; set; }

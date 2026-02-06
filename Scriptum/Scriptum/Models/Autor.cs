@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scriptum.Models
 {
@@ -12,6 +13,7 @@ namespace Scriptum.Models
 
         public string? Nacionalidad { get; set; }
         [Display(Name = "Fecha de nacimiento")]
+        [Column(TypeName = "timestamp without time zone")]
         public DateTime? FechaNacimiento { get; set; }
 
     }
