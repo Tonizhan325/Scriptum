@@ -16,6 +16,7 @@ namespace Scriptum.Models
 
         public string? Comentario { get; set; }
         [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Fecha { get; set; }
     }
 }

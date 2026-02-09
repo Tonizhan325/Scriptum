@@ -14,6 +14,7 @@ namespace Scriptum.Models
         public string? Nacionalidad { get; set; }
         [Display(Name = "Fecha de nacimiento")]
         [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaNacimiento { get; set; }
 
     }

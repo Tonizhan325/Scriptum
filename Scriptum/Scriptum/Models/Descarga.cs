@@ -12,6 +12,7 @@ namespace Scriptum.Models
         public int IdLibro { get; set; }
         [Display(Name = "Fecha de descarga")]
         [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDescarga { get; set; }
         [Display(Name = "Dirección ip")]
         public string Ip { get; set; }

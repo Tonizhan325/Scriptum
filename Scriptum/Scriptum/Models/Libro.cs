@@ -20,6 +20,7 @@ namespace Scriptum.Models
         public DateTime FechaSubida { get; set; }
         [Display(Name = "Fecha de revisión")]
         [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaRevision { get; set; }
         [Display(Name = "Id usuario")]
         public int IdUsuario { get; set; }

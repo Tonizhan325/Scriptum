@@ -15,6 +15,7 @@ namespace Scriptum.Models
         public string? Email { get; set; }
         [Display(Name = "Fecha de registro")]
         [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime fechaRegistro { get; set; }
         public string Estado { get; set; }
 

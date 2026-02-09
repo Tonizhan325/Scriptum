@@ -12,6 +12,7 @@ namespace Scriptum.Models
 
         [Display(Name = "Fecha de subida")]
         [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaSubida { get; set; }
 
         public string? URL { get; set; }
