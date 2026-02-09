@@ -16,18 +16,19 @@ namespace Scriptum.Controllers
             _context = context;
         }
 
-        //public IActionResult Index()
-        //{
-        //    var vm = new CatalogoViewModel
-        //    {
-        //        Libros = _context.Libros
-        //                         .Include(l => l.Genero)
-        //                         .ToList(),
+        public IActionResult Index()
+        {
+            var vm = new CatalogoViewModel
+            {
+                Libros = _context.Libros
+                                 .Include(l => l.Genero)
+                                 .ToList(),
 
-        //        Generos = _context.Generos.ToList()
-        //    };
+                Generos = _context.Generos.ToList()
+            };
 
-        //    return View(vm);
-        //}
+            return View(vm);
+        }
+
     }
 }

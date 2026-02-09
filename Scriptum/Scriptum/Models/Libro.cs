@@ -23,6 +23,6 @@ namespace Scriptum.Models
         public int IdUsuario { get; set; }
         [Display(Name = "Id género")]
         public string? IdGenero { get; set; }
-        //public Genero? Genero { get; set; }
+        public Genero? Genero { get; set; }
     }
 }
