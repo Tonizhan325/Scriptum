@@ -14,8 +14,6 @@ namespace Scriptum.Models
         [Display(Name = "Tamaño del archivo")]
         public decimal TamañoArchivo { get; set; }
         public string? URL { get; set; }
-        public string Estado { get; set; }
-        [Display(Name = "Fecha de subida")]
         public DateTime FechaSubida { get; set; }
         [Display(Name = "Fecha de revisión")]
         public DateTime? FechaRevision { get; set; }
