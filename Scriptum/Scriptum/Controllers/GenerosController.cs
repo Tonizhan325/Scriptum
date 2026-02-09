@@ -22,8 +22,19 @@ namespace Scriptum.Controllers
         }
 
         // GET: Generos
-        public async Task<IActionResult> Index(string strCadenaBusqueda)
+        public async Task<IActionResult> Index(string strCadenaBusqueda, int? pageNumber)
         {
+
+            if (strCadenaBusqueda == null)
+            {
+                // Cargar datos de Generos
+                var genero = from s in _context.Generos
+                            select s;
+                int pageSize = 10;
+                return View(await PaginatedList<Genero>.CreateAsync(genero.AsNoTracking(),
+                pageNumber ?? 1, pageSize));
+
+            }
 
             ViewData["BusquedaActual"] = strCadenaBusqueda;
 

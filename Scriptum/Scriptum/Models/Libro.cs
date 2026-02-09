@@ -16,6 +16,7 @@ namespace Scriptum.Models
         public decimal TamañoArchivo { get; set; }
         public string? URL { get; set; }
         [Display(Name = "Fecha de subida")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Column(TypeName = "timestamp without time zone")]
         public DateTime FechaSubida { get; set; }
         [Display(Name = "Fecha de revisión")]
