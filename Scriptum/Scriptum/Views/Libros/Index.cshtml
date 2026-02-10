@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Scriptum.Models.Libro>
+﻿@* @model IEnumerable<Scriptum.Models.Libro> *@
+@model PaginatedList<Scriptum.Models.Libro>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,37 +8,64 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Crear nuevo</a>
 </p>
+
+@* Agregar un cuadro de búsqueda en la vista Index de Avisos *@
+<form asp-action="Index">
+    <div class="container">
+        <div class="row align-items-start">
+            <div class="col-md">
+                <label class="control-label">Título del libro:</label>
+                <input type="text" name="strCadenaBusqueda"
+                       value="@ViewData["BusquedaActual"]" class="form-control" />
+            </div>
+            <div class="col-md align-self-end">
+                <input type="submit" value="Buscar" class="btn btn-default" /> |
+                <a asp-action="Index" class="btn btn-default">Lista completa</a>
+            </div>
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Titulo)
+                Título
+                @* @Html.DisplayNameFor(model => model.Titulo) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
+                Descripción
+                @* @Html.DisplayNameFor(model => model.Descripcion) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Idioma)
+                Idioma
+                @* @Html.DisplayNameFor(model => model.Idioma) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TamañoArchivo)
+                Tamaño de archivo
+                @* @Html.DisplayNameFor(model => model.TamañoArchivo) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.URL)
+                URL
+                @* @Html.DisplayNameFor(model => model.URL) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaSubida)
+                Fecha de subida
+                @* @Html.DisplayNameFor(model => model.FechaSubida) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaRevision)
+                Fecha de revisión
+                @* @Html.DisplayNameFor(model => model.FechaRevision) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdUsuario)
+                IdUsuario
+                @* @Html.DisplayNameFor(model => model.IdUsuario) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdGenero)
+                IdGenero
+                @* @Html.DisplayNameFor(model => model.IdGenero) *@
             </th>
             <th></th>
         </tr>
@@ -81,3 +109,18 @@
 }
     </tbody>
 </table>
+
+@* Poner botones de página Siguiente y Anterior *@
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-outline-secondary @prevDisabled">
+    Anterior
+</a>
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-outline-secondary @nextDisabled">
+    Siguiente
+</a>
+

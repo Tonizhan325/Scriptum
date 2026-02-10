@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Scriptum.Data;
@@ -11,9 +12,11 @@ using Scriptum.Data;
 namespace Scriptum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260209161626_FechaSinHoras")]
+    partial class FechaSinHoras
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,9 +281,6 @@ namespace Scriptum.Migrations
                     b.Property<DateTime>("FechaSubida")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("GeneroId")
-                        .HasColumnType("text");
-
                     b.Property<string>("IdGenero")
                         .HasColumnType("text");
 
@@ -302,8 +302,6 @@ namespace Scriptum.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GeneroId");
 
                     b.ToTable("Libro", (string)null);
                 });
@@ -444,16 +442,6 @@ namespace Scriptum.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Scriptum.Models.Libro", b =>
-                {
-                    b.HasOne("Scriptum.Models.Genero", "Genero")
-                        .WithMany()
-                        .HasForeignKey("GeneroId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Genero");
                 });
 #pragma warning restore 612, 618
         }

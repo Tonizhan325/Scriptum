@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scriptum.Models
 {
@@ -14,8 +15,15 @@ namespace Scriptum.Models
         [Display(Name = "Tamaño del archivo")]
         public decimal TamañoArchivo { get; set; }
         public string? URL { get; set; }
+
+        [Display(Name = "Fecha de subida")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Column(TypeName = "timestamp without time zone")]
+
         public DateTime FechaSubida { get; set; }
         [Display(Name = "Fecha de revisión")]
+        [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaRevision { get; set; }
         [Display(Name = "Id usuario")]
         public int IdUsuario { get; set; }

@@ -22,9 +22,35 @@ namespace Scriptum.Controllers
         }
 
         // GET: Generos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string strCadenaBusqueda, int? pageNumber)
         {
-            return View(await _context.Generos.ToListAsync());
+
+            if (strCadenaBusqueda == null)
+            {
+                // Cargar datos de Generos
+                var genero = from s in _context.Generos
+                            select s;
+                int pageSize = 10;
+                return View(await PaginatedList<Genero>.CreateAsync(genero.AsNoTracking(),
+                pageNumber ?? 1, pageSize));
+
+            }
+
+            ViewData["BusquedaActual"] = strCadenaBusqueda;
+
+            var generos = _context.Generos.AsQueryable();
+            // Ordenar los avisos de forma descendente por FechaAviso
+            generos = generos.OrderByDescending(s => s.Id);
+
+            if (!String.IsNullOrEmpty(strCadenaBusqueda))
+            {
+                generos = generos.Where(s => s.Nombre.Contains(strCadenaBusqueda));
+            }
+
+
+            return View(await generos.AsNoTracking().ToListAsync());
+        
+            //return View(await _context.Generos.ToListAsync());
         }
 
         // GET: Generos/Details/5

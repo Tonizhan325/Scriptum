@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scriptum.Models
 {
@@ -14,7 +15,8 @@ namespace Scriptum.Models
         public int Puntuacion { get; set; }
 
         public string? Comentario { get; set; }
-
+        [Column(TypeName = "timestamp without time zone")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Fecha { get; set; }
     }
 }
