@@ -29,10 +29,9 @@ namespace Scriptum.Controllers
                 // Cargar datos de Libros
                 var libro = from s in _context.Libros
                             select s;
-                int pageSize = 10;
+                int pageSize = 5;
                 return View(await PaginatedList<Libro>.CreateAsync(libro.AsNoTracking(),
                 pageNumber ?? 1, pageSize));
-
             }
 
             ViewData["BusquedaActual"] = strCadenaBusqueda;
