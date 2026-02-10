@@ -29,6 +29,9 @@ namespace Scriptum.Models
         public int IdUsuario { get; set; }
         [Display(Name = "Id género")]
         public string? IdGenero { get; set; }
+        public string? NombreAutor { get; set; }
+        public string? EnlaceImagen { get; set; }
         public Genero? Genero { get; set; }
+
     }
 }

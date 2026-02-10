@@ -67,6 +67,14 @@
                 IdGenero
                 @* @Html.DisplayNameFor(model => model.IdGenero) *@
             </th>
+            <th>
+                Autor
+                @* @Html.DisplayNameFor(model => model.IdUsuario) *@
+            </th>
+            <th>
+                Imagen
+                @* @Html.DisplayNameFor(model => model.IdUsuario) *@
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -99,6 +107,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdGenero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreAutor)
+            </td>
+            <td>
+                <img src=@Html.DisplayFor(modelItem => item.EnlaceImagen) />
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |

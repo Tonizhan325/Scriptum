@@ -3,8 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Scriptum;
 using Scriptum.Data;
 using System;
+using CloudinaryDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Configura Cloudinary usando el string del appsettings
+var cloudinaryUrl = builder.Configuration["CloudinarySettings:CloudinaryUrl"];
+
+if (!string.IsNullOrEmpty(cloudinaryUrl))
+{
+    Cloudinary cloudinary = new Cloudinary(cloudinaryUrl);
+    cloudinary.Api.Secure = true;
+    builder.Services.AddSingleton(cloudinary);
+}
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
