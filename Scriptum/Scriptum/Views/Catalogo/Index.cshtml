@@ -9,6 +9,11 @@
         text-decoration: none;
         margin: 0.5rem 0;
     }
+
+    section > article {
+        display: flex;
+        gap: 1rem;
+    }
 </style>
 
 <!--Esto de abajo habrá que cambiarlo por un grid seguramente para evitar problemas de ancho de contenido-->
@@ -52,11 +57,18 @@
     }
     @foreach (var libro in Model.Libros)
     {
-        <div class="libro" style="border-bottom: 1px solid #ccc; margin-bottom: 1rem;">
-            <h4>@libro.Titulo</h4>
-            <p>@libro.Descripcion</p>
-            <small>Género: @libro.IdGenero | @libro.FechaSubida.ToShortDateString()</small>
-        </div>
+        <h4>@libro.Titulo</h4>
+        <article style="margin-top: 1rem">
+            <div class="portada-libro">
+                <img style="height:220px; width:150px" src=@Html.DisplayFor(modelItem => libro.EnlaceImagen) alt="Portada del libro">
+            </div>
+            <div class="libro" style="margin-bottom: 2rem;">
+                <p>@libro.Descripcion</p>
+                <small>Género: @libro.IdGenero | @libro.FechaSubida.ToShortDateString()</small>
+            </div>
+            <button style="max-height: 50px; margin-left:auto; margin-top:auto; width:10rem">Descargar libro</button>
+        </article>
+        <hr />
     }
     <div class="pagination mt-4">
         @for (int i = 1; i <= Model.TotalPaginas; i++)
