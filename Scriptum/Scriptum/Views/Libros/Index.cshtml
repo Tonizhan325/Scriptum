@@ -112,7 +112,7 @@
                 @Html.DisplayFor(modelItem => item.NombreAutor)
             </td>
             <td>
-                <img src=@Html.DisplayFor(modelItem => item.EnlaceImagen) />
+                @Html.DisplayFor(modelItem => item.EnlaceImagen)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |

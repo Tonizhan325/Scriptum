@@ -1,13 +1,35 @@
-﻿@model CatalogoViewModel
+﻿@model CatalogoViewModel;
 
 @{
     ViewData["Title"] = "Index";
 }
 <style>
-    aside a {
+    aside {
+        position: fixed;
+        right: -200px; /* Escondido por defecto (ajusta según el ancho) */
+        top: 25%;
+        width: 200px;
+        background: #2C3E50;
+        transition: right 0.3s ease; /* Animación suave */
+        z-index: 1000;
+        padding: 2rem;
+        border-radius: 0 0 0 10px;
+    }
+
+        aside.active {
+            right: 0; /* Se muestra */
+        }
+
+    #btn-toggle-filter {
+        position: absolute;
+        left: -60px; /* Botón pegado al borde del panel */
+        top: 0px;
+        background: #2C3E50;
         color: white;
-        text-decoration: none;
-        margin: 0.5rem 0;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px 0 0 5px;
     }
 
     section > article {
@@ -17,11 +39,14 @@
 </style>
 
 <!--Esto de abajo habrá que cambiarlo por un grid seguramente para evitar problemas de ancho de contenido-->
-<aside style="position:fixed; display:flex; right:0; top: 30%; background:#2C3E50; flex-direction:column; padding: 2rem; color: white;">
-    <h3>Filtrar por género</h3>
+<aside id="filtro-sidebar">
+    <button id="btn-toggle-filter" title="Filtrar" style="font-size:36px;">
+        🔍
+    </button>
+
+    <h3 style="color:white; text-align:center; margin-bottom: 1rem;">Filtrar por género</h3>
     @foreach (var item in Model.Generos)
     {
-        <!-- Enviamos el ID del género al método Index -->
         <a asp-action="Index" asp-route-generoId="@item.Id" style="color: #ecf0f1; display:block; margin-bottom: 5px;">
             @item.Nombre
         </a>
@@ -33,14 +58,13 @@
 <h1>Catálogo</h1>
 
 <!--Esto es pura apariencia, hay que cambiarlo-->
+@{
+    string generoSelec = Utils.SelectSearchFilters(Model.GeneroSeleccionado);
+}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Library</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data</li>
-    </ol>
-</nav>
+<div style="margin-bottom:2rem; margin-top:2rem">
+    <span style="color:grey;">Estás filtrando por: @generoSelec</span>
+</div>
 
 <section>
     <form asp-action="Index" method="get" class="mb-4">
@@ -57,10 +81,12 @@
     }
     @foreach (var libro in Model.Libros)
     {
-        <h4>@libro.Titulo</h4>
+        string url = Utils.FillEmptyImageUrl(libro.EnlaceImagen);
+        
+        <h4> @libro.Titulo </h4>
         <article style="margin-top: 1rem">
             <div class="portada-libro">
-                <img style="height:220px; width:150px" src=@Html.DisplayFor(modelItem => libro.EnlaceImagen) alt="Portada del libro">
+                <img style="height:220px; width:150px" src=@Html.DisplayFor(modelItem => url) alt="Portada del libro">
             </div>
             <div class="libro" style="margin-bottom: 2rem;">
                 <p>@libro.Descripcion</p>
@@ -83,5 +109,10 @@
         }
     </div>
 </section>
+<script>
+    document.getElementById("btn-toggle-filter").addEventListener("click", function() {
+        document.getElementById("filtro-sidebar").classList.toggle("active");
+    });
+</script>
 
 
