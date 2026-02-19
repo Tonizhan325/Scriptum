@@ -10,11 +10,7 @@ namespace Scriptum.Migrations
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Estado",
-                table: "Libro");
-
+        { 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "fechaRegistro",
                 table: "Usuario",

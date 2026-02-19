@@ -8,8 +8,7 @@ namespace Scriptum.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "El nombre es requerido")]
         public string Nombre { get; set; }
-        [Required(ErrorMessage = "La contraseña es requerida")]
-        public string Contraseña { get; set; }
+        public string? Contraseña { get; set; }
         [Display(Name = "Correo eléctronico")]
         [EmailAddress(ErrorMessage = "El correo no es válido")]
         public string? Email { get; set; }
@@ -17,7 +16,7 @@ namespace Scriptum.Models
         [Column(TypeName = "timestamp without time zone")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime fechaRegistro { get; set; }
-        public string Estado { get; set; }
+        public string? Estado { get; set; }
 
     }
 }

@@ -33,6 +33,7 @@
         <tr>
             <th>
                 Nombre
+                </a>
                 @* @Html.DisplayNameFor(model => model.Nombre) *@
             </th>
             <th></th>
@@ -63,7 +64,7 @@
    class="btn btn-outline-secondary @prevDisabled">
     Anterior
 </a>
-<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)"
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)""
    class="btn btn-outline-secondary @nextDisabled">
     Siguiente
 </a>

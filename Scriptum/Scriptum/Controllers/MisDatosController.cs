@@ -22,16 +22,21 @@ namespace Scriptum.Controllers
         // POST: MisDatos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nombre,Contraseña,Email,fechaRegistro,Estado")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Nombre")] Usuario usuario)
         {
             // Asignar el Email del usuario actual
             usuario.Email = User.Identity.Name;
+            usuario.fechaRegistro = DateTime.Now;  // ← ¡ASIGNAR AQUÍ, ANTES DE VALIDAR!
+            usuario.Estado = "Activo";
+            usuario.Contraseña = Guid.NewGuid().ToString();
+            
             if (ModelState.IsValid)
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Home");
             }
+            var errores = ModelState.Values.SelectMany(v => v.Errors);
             return View(usuario);
         }
 
@@ -52,7 +57,7 @@ namespace Scriptum.Controllers
         // POST: MisDatos/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,[Bind("Nombre,Contraseña,Email,fechaRegistro,Estado")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id,[Bind("Nombre")] Usuario usuario)
         {
             if (id != usuario.Id)
             {

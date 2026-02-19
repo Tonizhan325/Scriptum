@@ -24,7 +24,7 @@ namespace Scriptum.Controllers
         // GET: Subidas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Subida.ToListAsync());
+            return View(await _context.Subidas.ToListAsync());
         }
 
         // GET: Subidas/Details/5
@@ -35,7 +35,7 @@ namespace Scriptum.Controllers
                 return NotFound();
             }
 
-            var subida = await _context.Subida
+            var subida = await _context.Subidas
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subida == null)
             {
@@ -75,7 +75,7 @@ namespace Scriptum.Controllers
                 return NotFound();
             }
 
-            var subida = await _context.Subida.FindAsync(id);
+            var subida = await _context.Subidas.FindAsync(id);
             if (subida == null)
             {
                 return NotFound();
@@ -126,7 +126,7 @@ namespace Scriptum.Controllers
                 return NotFound();
             }
 
-            var subida = await _context.Subida
+            var subida = await _context.Subidas
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subida == null)
             {
@@ -141,10 +141,10 @@ namespace Scriptum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var subida = await _context.Subida.FindAsync(id);
+            var subida = await _context.Subidas.FindAsync(id);
             if (subida != null)
             {
-                _context.Subida.Remove(subida);
+                _context.Subidas.Remove(subida);
             }
 
             await _context.SaveChangesAsync();
@@ -153,7 +153,7 @@ namespace Scriptum.Controllers
 
         private bool SubidaExists(int id)
         {
-            return _context.Subida.Any(e => e.Id == id);
+            return _context.Subidas.Any(e => e.Id == id);
         }
     }
 }

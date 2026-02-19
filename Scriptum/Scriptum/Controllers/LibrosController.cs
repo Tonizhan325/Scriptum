@@ -22,32 +22,37 @@ namespace Scriptum.Controllers
         }
 
         // GET: Libros
-        public async Task<IActionResult> Index(string strCadenaBusqueda, int? pageNumber)
+        public async Task<IActionResult> Index(string strCadenaBusqueda, string strCadenaAutor, int? pageNumber)
         {
-            if (strCadenaBusqueda == null)
-            {
-                // Cargar datos de Libros
-                var libro = from s in _context.Libros
-                            select s;
-                int pageSize = 5;
-                return View(await PaginatedList<Libro>.CreateAsync(libro.AsNoTracking(),
-                pageNumber ?? 1, pageSize));
-            }
+            int pageSize = 5;
 
+            // Guardar los parámetros de búsqueda en ViewData
             ViewData["BusquedaActual"] = strCadenaBusqueda;
-            // Cargar datos de los avisos
-            var libros = _context.Libros.AsQueryable();
-            // Ordenar los avisos de forma descendente por FechaAviso
-            libros = libros.OrderByDescending(s => s.FechaSubida);
+            ViewData["BusquedaAutor"] = strCadenaAutor;
 
+            // Cargar datos de los libros como IQueryable
+            var libros = _context.Libros.AsQueryable();
+
+            // Aplicar filtros si existen
             if (!String.IsNullOrEmpty(strCadenaBusqueda))
             {
                 libros = libros.Where(s => s.Titulo.Contains(strCadenaBusqueda));
             }
 
-            return View(await libros.AsNoTracking().ToListAsync());
+            if (!String.IsNullOrEmpty(strCadenaAutor))
+            {
+                libros = libros.Where(s => s.NombreAutor.Contains(strCadenaAutor));
+            }
 
-            //return View(await _context.Libros.ToListAsync());
+            // ORDENAR SIEMPRE por FechaSubida de forma descendente
+            libros = libros.OrderByDescending(s => s.FechaSubida);
+
+            // Crear la lista paginada
+            return View(await PaginatedList<Libro>.CreateAsync(
+                libros.AsNoTracking(),
+                pageNumber ?? 1,
+                pageSize
+            ));
         }
 
         // GET: Libros/Details/5
@@ -79,7 +84,7 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero")] Libro libro)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,NombreAutor,EnlaceImagen,IdGenero")] Libro libro)
         {
             if (ModelState.IsValid)
             {
@@ -111,7 +116,7 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero")] Libro libro)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,NombreAutor,EnlaceImagen,IdGenero")] Libro libro)
         {
             if (id != libro.Id)
             {

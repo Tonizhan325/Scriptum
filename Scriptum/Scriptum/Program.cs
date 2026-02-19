@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Scriptum;
 using Scriptum.Data;
 using System;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 

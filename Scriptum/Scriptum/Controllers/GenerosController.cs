@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Scriptum.Data;
 using Scriptum.Models;
 using System;
@@ -22,35 +23,32 @@ namespace Scriptum.Controllers
         }
 
         // GET: Generos
-        public async Task<IActionResult> Index(string strCadenaBusqueda, int? pageNumber)
+        public async Task<IActionResult> Index( string strCadenaBusqueda, int? pageNumber)
         {
+            int pageSize = 10;
 
-            if (strCadenaBusqueda == null)
-            {
-                // Cargar datos de Generos
-                var genero = from s in _context.Generos
-                            select s;
-                int pageSize = 10;
-                return View(await PaginatedList<Genero>.CreateAsync(genero.AsNoTracking(),
-                pageNumber ?? 1, pageSize));
-
-            }
-
+            // Guardar los parámetros de búsqueda en ViewData
             ViewData["BusquedaActual"] = strCadenaBusqueda;
 
+            // Cargar datos de los libros como IQueryable
             var generos = _context.Generos.AsQueryable();
-            // Ordenar los avisos de forma descendente por FechaAviso
-            generos = generos.OrderByDescending(s => s.Id);
 
+            // Aplicar filtros si existen
             if (!String.IsNullOrEmpty(strCadenaBusqueda))
             {
                 generos = generos.Where(s => s.Nombre.Contains(strCadenaBusqueda));
             }
 
+            // ORDENAR SIEMPRE por FechaSubida de forma descendente
+            generos = generos.OrderBy(s => s.Nombre);
 
-            return View(await generos.AsNoTracking().ToListAsync());
-        
-            //return View(await _context.Generos.ToListAsync());
+            // Crear la lista paginada
+            return View(await PaginatedList<Genero>.CreateAsync(
+                generos.AsNoTracking(),
+                pageNumber ?? 1,
+                pageSize
+            ));
+
         }
 
         // GET: Generos/Details/5

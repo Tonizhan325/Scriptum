@@ -24,31 +24,29 @@ namespace Scriptum.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index(string strCadenaBusqueda, int? pageNumber)
         {
-            if (strCadenaBusqueda == null)
-            {
-                // Cargar datos de Usuarios
-                var empleados = from s in _context.Usuarios
-                                select s;
-                int pageSize = 10;
-                return View(await PaginatedList<Usuario>.CreateAsync(empleados.AsNoTracking(),
-                pageNumber ?? 1, pageSize));
+            int pageSize = 10;
 
-            }
-
+            // Guardar los parámetros de búsqueda en ViewData
             ViewData["BusquedaActual"] = strCadenaBusqueda;
 
+            // Cargar datos de los libros como IQueryable
             var usuarios = _context.Usuarios.AsQueryable();
-            // Ordenar los avisos de forma descendente por FechaAviso
-            usuarios = usuarios.OrderByDescending(s => s.fechaRegistro);
 
+            // Aplicar filtros si existen
             if (!String.IsNullOrEmpty(strCadenaBusqueda))
             {
                 usuarios = usuarios.Where(s => s.Nombre.Contains(strCadenaBusqueda));
             }
 
-            return View(await usuarios.AsNoTracking().ToListAsync());
+            // ORDENAR SIEMPRE por FechaSubida de forma descendente
+            usuarios = usuarios.OrderByDescending(s => s.fechaRegistro);
 
-            //return View(await _context.Usuarios.ToListAsync());
+            // Crear la lista paginada
+            return View(await PaginatedList<Usuario>.CreateAsync(
+                usuarios.AsNoTracking(),
+                pageNumber ?? 1,
+                pageSize
+            ));
         }
 
         // GET: Usuarios/Details/5

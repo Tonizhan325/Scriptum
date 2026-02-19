@@ -12,6 +12,7 @@ namespace Scriptum.Models
         [Display(Name = "Descripción")]
         public string? Descripcion { get; set; }
         public string Idioma { get; set; }
+
         [Display(Name = "Tamaño del archivo")]
         public decimal TamañoArchivo { get; set; }
         public string? URL { get; set; }
@@ -29,6 +30,9 @@ namespace Scriptum.Models
         public int IdUsuario { get; set; }
         [Display(Name = "Id género")]
         public string? IdGenero { get; set; }
+        [Display(Name = "Nombre de autor")]
+        public string? NombreAutor { get; set; }
+        public string? EnlaceImagen { get; set; }
         public Genero? Genero { get; set; }
     }
 }

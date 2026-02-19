@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Scriptum.Data;
@@ -11,9 +12,11 @@ using Scriptum.Data;
 namespace Scriptum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260210182837_libroModificacion")]
+    partial class libroModificacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,6 +277,7 @@ namespace Scriptum.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("EnlaceImagen")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("FechaRevision")
@@ -296,6 +300,7 @@ namespace Scriptum.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("NombreAutor")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal>("TamañoArchivo")
