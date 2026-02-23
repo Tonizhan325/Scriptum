@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace Scriptum.Controllers
 {
@@ -15,10 +17,12 @@ namespace Scriptum.Controllers
     public class LibrosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly Cloudinary _cloudinary; //Esto conecta con las imágenes
 
-        public LibrosController(ApplicationDbContext context)
+        public LibrosController(ApplicationDbContext context, Cloudinary cloudinary)
         {
             _context = context;
+            _cloudinary = cloudinary;
         }
 
         // GET: Libros
@@ -84,10 +88,28 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,NombreAutor,EnlaceImagen,IdGenero")] Libro libro)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,EnlaceImagen")] Libro libro, IFormFile imagenArchivo)
+
         {
             if (ModelState.IsValid)
             {
+                // Verificar si el usuario subió una imagen
+                if (imagenArchivo != null && imagenArchivo.Length > 0)
+                {
+                    // Configurar la subida a Cloudinary
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(imagenArchivo.FileName, imagenArchivo.OpenReadStream()),
+                        AssetFolder = "portadas_libros" // Carpeta opcional en Cloudinary
+                    };
+
+                    // Ejecutar la subida
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+                    // Guardar la URL resultante en el objeto libro
+                    libro.EnlaceImagen = uploadResult.SecureUrl.ToString();
+                }
+
                 _context.Add(libro);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -116,7 +138,11 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< HEAD
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,NombreAutor,EnlaceImagen,IdGenero")] Libro libro)
+=======
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,EnlaceImagen")] Libro libro)
+>>>>>>> devFront
         {
             if (id != libro.Id)
             {

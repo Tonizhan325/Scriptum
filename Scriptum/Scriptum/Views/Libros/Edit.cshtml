@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -53,9 +53,8 @@
                 <span asp-validation-for="NombreAutor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EnlaceImagen" class="control-label"></label>
-                <input asp-for="EnlaceImagen"" class="form-control" />
-                <span asp-validation-for="EnlaceImagen" class="text-danger"></span>
+                <label class="control-label">Portada del Libro</label>
+                <input type="file" name="imagenArchivo" class="form-control" accept="image/*" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-primary" />

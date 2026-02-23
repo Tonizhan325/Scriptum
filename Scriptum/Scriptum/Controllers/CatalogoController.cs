@@ -16,18 +16,44 @@ namespace Scriptum.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    var vm = new CatalogoViewModel
+        //    {
+        //        Libros = _context.Libros
+        //                         .Include(l => l.Genero)
+        //                         .ToList(),
+
+        //        Generos = _context.Generos.ToList()
+        //    };
+
+        //    return View(vm);
+        //}
+        public async Task<IActionResult> Index(string? generoId, string buscar, int pagina = 1)
         {
-            var vm = new CatalogoViewModel
+            int registrosPorPagina = 6;
+            var query = _context.Libros.AsQueryable();
+
+            // Filtros
+            if (generoId != null) query = query.Where(l => l.IdGenero == generoId);
+            if (!string.IsNullOrEmpty(buscar)) query = query.Where(l => l.Titulo.Contains(buscar));
+
+            // Paginación
+            int totalRegistros = await query.CountAsync();
+            var libros = await query
+                .Skip((pagina - 1) * registrosPorPagina)
+                .Take(registrosPorPagina)
+                .ToListAsync();
+
+            return View(new CatalogoViewModel
             {
-                Libros = _context.Libros
-                                 .Include(l => l.Genero)
-                                 .ToList(),
-
-                Generos = _context.Generos.ToList()
-            };
-
-            return View(vm);
+                Libros = libros,
+                Generos = await _context.Generos.ToListAsync(),
+                PaginaActual = pagina,
+                TotalPaginas = (int)Math.Ceiling(totalRegistros / (double)registrosPorPagina),
+                FiltroBusqueda = buscar,
+                GeneroSeleccionado = generoId
+            });
         }
 
     }
