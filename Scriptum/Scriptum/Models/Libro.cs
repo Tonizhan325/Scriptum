@@ -3,6 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scriptum.Models
 {
+
+    public enum Tipo
+    {
+        LIBRO,
+        COMIC,
+        REVISTA,
+        ARTICULO
+    }
+
+
     public class Libro
     {
         public int Id { get; set; }
@@ -34,5 +44,6 @@ namespace Scriptum.Models
         public string? NombreAutor { get; set; }
         public string? EnlaceImagen { get; set; }
         public Genero? Genero { get; set; }
+        public Tipo? Tipo { get; set; }
     }
 }

@@ -1,23 +1,139 @@
 ﻿@page
 @model ResendEmailConfirmationModel
 @{
-    ViewData["Title"] = "Resend email confirmation";
+    ViewData["Title"] = "Reenviar confirmación de correo";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2>Escribe su correo electrónico</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="nombre@ejemplo.com" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<style>
+    .custom-background {
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    .resend-card {
+        background: white;
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        padding: 2.5rem;
+    }
+
+        .resend-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .btn-resend {
+        background: linear-gradient(145deg, #4f46e5, #7c3aed);
+        border: none;
+        padding: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-resend:hover {
+            background: linear-gradient(145deg, #4338ca, #6d28d9);
+            transform: scale(1.02);
+        }
+
+    h1, h2 {
+        color: #1f2937;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .form-floating > .form-control:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+    }
+
+    hr {
+        background: linear-gradient(90deg, transparent, #4f46e5, transparent);
+        height: 2px;
+        border: none;
+        margin: 1.5rem 0;
+        opacity: 0.3;
+    }
+
+    .back-link {
+        color: #4f46e5;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        display: inline-block;
+        margin-top: 1rem;
+    }
+
+        .back-link:hover {
+            color: #7c3aed;
+            text-decoration: underline;
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+
+    .info-text {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .text-danger ul {
+        list-style: none;
+        padding-left: 0;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="custom-background">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+                <div class="resend-card">
+                    <h2 class="text-center mb-3">¿No recibiste el correo?</h2>
+
+                    <p class="info-text">
+                        Introduce tu dirección de correo electrónico y te enviaremos un nuevo enlace de confirmación.
+                    </p>
+
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="nombre@ejemplo.com" />
+                            <label asp-for="Input.Email" class="form-label">Correo electrónico</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="w-100 btn btn-lg btn-resend text-white mb-3">
+                            <i class="fas fa-paper-plane me-2"></i>Reenviar correo de confirmación
+                        </button>
+
+                        <hr />
+
+                        <div class="text-center">
+                            <a asp-page="./Login" class="back-link">
+                                <i class="fas fa-arrow-left"></i> Volver al inicio de sesión
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Reenviar</button>
-        </form>
+        </div>
     </div>
 </div>
 
