@@ -138,11 +138,7 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-<<<<<<< HEAD
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,NombreAutor,EnlaceImagen,IdGenero")] Libro libro)
-=======
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,EnlaceImagen")] Libro libro)
->>>>>>> devFront
         {
             if (id != libro.Id)
             {
