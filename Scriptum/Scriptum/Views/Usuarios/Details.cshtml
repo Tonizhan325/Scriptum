@@ -4,45 +4,268 @@
     ViewData["Title"] = "Perfil del usuario";
 }
 
-<h1>Detalles del usuario</h1>
+<style>
+    /* Estilos generales */
+    .page-header {
+        background: #2C3E50;
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+    }
 
-<div>
-    <h4>Usuario</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Contraseña)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Contraseña)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.fechaRegistro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.fechaRegistro)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-    </dl>
+        .page-header h1 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 2.5rem;
+        }
+
+        .page-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+    /* Tarjeta de perfil */
+    .profile-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 2.5rem;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+    /* Avatar/Icono de usuario */
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #2C3E50, #1a2b3a);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: white;
+        box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
+    }
+
+        .profile-avatar svg {
+            width: 50px;
+            height: 50px;
+        }
+
+    .profile-name {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-email {
+        text-align: center;
+        color: #6b7280;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+
+    /* Tabla de detalles */
+    .details-table {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .details-row {
+        display: flex;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .details-row:last-child {
+            border-bottom: none;
+        }
+
+    .details-label {
+        flex: 0 0 200px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .details-value {
+        flex: 1;
+        color: #4b5563;
+    }
+
+    /* Badge para estado */
+    .status-badge {
+        display: inline-block;
+        padding: 0.35rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+
+    .status-inactive {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+
+    .status-pending {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+
+    /* Botones de acción */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .btn-edit {
+        background: #2C3E50;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+        .btn-edit:hover {
+            background: #1a2b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+            color: white;
+        }
+
+    .btn-back {
+        background: white;
+        color: #2C3E50;
+        border: 2px solid #2C3E50;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+        .btn-back:hover {
+            background: #2C3E50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+
+    /* Campo de contraseña oculta */
+    .password-hidden {
+        font-family: monospace;
+        letter-spacing: 2px;
+    }
+</style>
+
+<!-- Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <p>Información detallada del usuario</p>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Volver</a>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="profile-card">
+
+                <!-- Avatar -->
+                <div class="profile-avatar">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+
+                <!-- Nombre y email -->
+                <div class="profile-name">@Model.Nombre</div>
+                <div class="profile-email">@Model.Email</div>
+
+                <!-- Detalles -->
+                <div class="details-table">
+                    <div class="details-row">
+                        <div class="details-label">@Html.DisplayNameFor(model => model.Nombre)</div>
+                        <div class="details-value">@Html.DisplayFor(model => model.Nombre)</div>
+                    </div>
+
+                    <div class="details-row">
+                        <div class="details-label">@Html.DisplayNameFor(model => model.Contraseña)</div>
+                        <div class="details-value password-hidden">••••••••</div>
+                    </div>
+
+                    <div class="details-row">
+                        <div class="details-label">@Html.DisplayNameFor(model => model.Email)</div>
+                        <div class="details-value">@Html.DisplayFor(model => model.Email)</div>
+                    </div>
+
+                    <div class="details-row">
+                        <div class="details-label">@Html.DisplayNameFor(model => model.fechaRegistro)</div>
+                        <div class="details-value">@Html.DisplayFor(model => model.fechaRegistro)</div>
+                    </div>
+
+                    <div class="details-row">
+                        <div class="details-label">@Html.DisplayNameFor(model => model.Estado)</div>
+                        <div class="details-value">
+                            @{
+                                var estadoClass = "status-pending";
+                                switch (Model.Estado?.ToLower())
+                                {
+                                    case "activo":
+                                        estadoClass = "status-active";
+                                        break;
+                                    case "inactivo":
+                                        estadoClass = "status-inactive";
+                                        break;
+                                }
+                            }
+                            <span class="status-badge @estadoClass">@Model.Estado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="action-buttons">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                        Editar perfil
+                    </a>
+                    <a asp-action="Index" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

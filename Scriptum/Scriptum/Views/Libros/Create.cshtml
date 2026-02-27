@@ -1,77 +1,449 @@
 ﻿@model Scriptum.Models.Libro
 
 @{
-    ViewData["Title"] = "Gestión de libros";
+    ViewData["Title"] = "Crear Libro";
 }
 
-<h1>Crear libro</h1>
+<style>
+    /* Estilos generales */
+    .page-header {
+        background: #2C3E50;
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+    }
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Idioma" class="control-label"></label>
-                <input asp-for="Idioma" class="form-control" />
-                <span asp-validation-for="Idioma" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TamañoArchivo" class="control-label"></label>
-                <input asp-for="TamañoArchivo" class="form-control" />
-                <span asp-validation-for="TamañoArchivo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaSubida" class="control-label"></label>
-                <input asp-for="FechaSubida" class="form-control" />
-                <span asp-validation-for="FechaSubida" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaRevision" class="control-label"></label>
-                <input asp-for="FechaRevision" class="form-control" />
-                <span asp-validation-for="FechaRevision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdUsuario" class="control-label"></label>
-                <input asp-for="IdUsuario" class="form-control" />
-                <span asp-validation-for="IdUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NombreAutor" class="control-label"></label>
-                <input asp-for="NombreAutor" class="form-control" />
-                <span asp-validation-for="NombreAutor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdGenero" class="control-label"></label>
-                <input asp-for="IdGenero" class="form-control" />
-                <span asp-validation-for="IdGenero" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Portada del Libro</label>
-                <input type="file" name="imagenArchivo" class="form-control" accept="image/*" />
+        .page-header h1 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 2.5rem;
+        }
 
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-        </form>
+        .page-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+    /* Tarjeta del formulario */
+    .form-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 2.5rem;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+        }
+
+    /* Títulos del formulario */
+    .form-title {
+        color: #1f2937;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+        .form-title svg {
+            color: #2C3E50;
+        }
+
+    .form-subtitle {
+        color: #6b7280;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+
+    /* Grid del formulario */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .form-group-full {
+        grid-column: span 2;
+    }
+
+    .form-group-custom {
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+        .form-label i {
+            color: #2C3E50;
+            margin-right: 0.25rem;
+        }
+
+    .form-control-custom {
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .form-control-custom:focus {
+            border-color: #2C3E50;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+            outline: none;
+        }
+
+        .form-control-custom[type="file"] {
+            padding: 0.5rem;
+            background: #f9fafb;
+            cursor: pointer;
+        }
+
+            .form-control-custom[type="file"]::file-selector-button {
+                background: #2C3E50;
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                margin-right: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+                .form-control-custom[type="file"]::file-selector-button:hover {
+                    background: #1a2b3a;
+                }
+
+    textarea.form-control-custom {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    /* Icono dentro del input */
+    .input-icon-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+    }
+
+    .input-icon-field {
+        padding-left: 2.5rem;
+    }
+
+    /* Botón de crear */
+    .btn-create {
+        background: #2C3E50;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+        .btn-create:hover {
+            background: #1a2b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+    /* Botón volver */
+    .btn-back {
+        background: white;
+        color: #2C3E50;
+        border: 2px solid #2C3E50;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        margin-top: 1.5rem;
+    }
+
+        .btn-back:hover {
+            background: #2C3E50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+
+    /* Línea decorativa */
+    hr {
+        background: linear-gradient(90deg, transparent, #2C3E50, transparent);
+        height: 2px;
+        border: none;
+        margin: 1.5rem 0;
+        opacity: 0.2;
+    }
+
+    /* Preview de imagen */
+    .image-preview {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f9fafb;
+        border-radius: 0.75rem;
+        text-align: center;
+    }
+
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+    /* Mensajes de validación */
+    .text-danger {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Tooltip de ayuda */
+    .help-tooltip {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+        .help-tooltip svg {
+            width: 14px;
+            height: 14px;
+        }
+</style>
+
+<!-- Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <p>Añade un nuevo libro al catálogo</p>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="form-card">
+
+                <!-- Título decorativo -->
+                <div class="form-title">
+                    <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                    </svg>
+                    Nuevo Libro
+                </div>
+                <p class="form-subtitle">Completa los detalles del libro</p>
+
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+                    <div class="form-grid">
+                        <!-- Título -->
+                        <div class="form-group-custom form-group-full">
+                            <label asp-for="Titulo" class="form-label">
+                                <i class="fas fa-heading"></i> Título del libro
+                            </label>
+                            <input asp-for="Titulo" class="form-control-custom" placeholder="Ej: Cien años de soledad" />
+                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="form-group-custom form-group-full">
+                            <label asp-for="Descripcion" class="form-label">
+                                <i class="fas fa-align-left"></i> Descripción
+                            </label>
+                            <textarea asp-for="Descripcion" class="form-control-custom" placeholder="Breve descripción del libro..."></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <!-- Idioma -->
+                        <div class="form-group-custom">
+                            <label asp-for="Idioma" class="form-label">
+                                <i class="fas fa-language"></i> Idioma
+                            </label>
+                            <select asp-for="Idioma" class="form-control-custom">
+                                <option value="">Selecciona un idioma</option>
+                                <option value="Español">Español</option>
+                                <option value="Inglés">Inglés</option>
+                                <option value="Francés">Francés</option>
+                                <option value="Alemán">Alemán</option>
+                                <option value="Italiano">Italiano</option>
+                                <option value="Portugués">Portugués</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <span asp-validation-for="Idioma" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tamaño de archivo -->
+                        <div class="form-group-custom">
+                            <label asp-for="TamañoArchivo" class="form-label">
+                                <i class="fas fa-database"></i> Tamaño (bytes)
+                            </label>
+                            <input asp-for="TamañoArchivo" class="form-control-custom" placeholder="Ej: 1048576" type="number" />
+                            <span asp-validation-for="TamañoArchivo" class="text-danger"></span>
+                            <div class="help-tooltip">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                                <span>1 MB = 1048576 bytes</span>
+                            </div>
+                        </div>
+
+                        <!-- Fecha de subida -->
+                        <div class="form-group-custom">
+                            <label asp-for="FechaSubida" class="form-label">
+                                <i class="fas fa-calendar-plus"></i> Fecha de subida
+                            </label>
+                            <input asp-for="FechaSubida" class="form-control-custom" type="datetime-local" />
+                            <span asp-validation-for="FechaSubida" class="text-danger"></span>
+                        </div>
+
+                        <!-- Fecha de revisión -->
+                        <div class="form-group-custom">
+                            <label asp-for="FechaRevision" class="form-label">
+                                <i class="fas fa-calendar-check"></i> Fecha de revisión
+                            </label>
+                            <input asp-for="FechaRevision" class="form-control-custom" type="datetime-local" />
+                            <span asp-validation-for="FechaRevision" class="text-danger"></span>
+                        </div>
+
+                        <!-- ID Usuario -->
+                        <div class="form-group-custom">
+                            <label asp-for="IdUsuario" class="form-label">
+                                <i class="fas fa-user"></i> ID Usuario
+                            </label>
+                            <input asp-for="IdUsuario" class="form-control-custom" placeholder="Ej: 1" type="number" />
+                            <span asp-validation-for="IdUsuario" class="text-danger"></span>
+                        </div>
+
+                        <!-- Nombre del autor -->
+                        <div class="form-group-custom">
+                            <label asp-for="NombreAutor" class="form-label">
+                                <i class="fas fa-pen-fancy"></i> Nombre del autor
+                            </label>
+                            <input asp-for="NombreAutor" class="form-control-custom" placeholder="Ej: Gabriel García Márquez" />
+                            <span asp-validation-for="NombreAutor" class="text-danger"></span>
+                        </div>
+
+                        <!-- ID Género -->
+                        <div class="form-group-custom">
+                            <label asp-for="IdGenero" class="form-label">
+                                <i class="fas fa-language"></i> Género
+                            </label>
+                            <select asp-for="IdGenero" class="form-control-custom">
+                                <option value="">Selecciona un género</option>
+                                <option value="aven">Aventura</option>
+                                <option value="cien">Ciencia ficción</option>
+                                <option value="cienc">Ciencia</option>
+                                <option value="dram">Drama</option>
+                                <option value="fant">Fantasía</option>
+                                <option value="filo"">Filosofía</option>
+                                <option value="hist" ">Historia</option>
+                                <option value="roma" ">Romance</option>
+                                <option value="susp" ">Suspense</option>
+                                <option value="terr" ">Terror</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <span asp-validation-for="IdGenero" class="text-danger"></span>
+                        </div>
+
+                        <!-- Portada del libro -->
+                        <div class="form-group-custom form-group-full">
+                            <label class="form-label">
+                                <i class="fas fa-image"></i> Portada del libro
+                            </label>
+                            <input type="file" name="imagenArchivo" class="form-control-custom" accept="image/*" id="imagenInput" />
+                            <div class="help-tooltip">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Formatos permitidos: JPG, PNG, GIF (máx 5MB)</span>
+                            </div>
+
+                            <!-- Preview de imagen -->
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="#" alt="Vista previa" />
+                                <p class="help-tooltip mt-2">Vista previa de la portada</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <button type="submit" class="btn-create">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Crear libro
+                    </button>
+                </form>
+
+                <div class="text-center">
+                    <a asp-action="Index" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Volver a la lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Script para previsualizar la imagen -->
+    <script>
+        document.getElementById('imagenInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+    </script>
 }

@@ -1,52 +1,412 @@
 ﻿@model Scriptum.Models.Usuario
 
 @{
-    ViewData["Title"] = "Gestión de usuarios";
+    ViewData["Title"] = "Crear Usuario";
 }
 
-<h1>Gestión de usuarios</h1>
+<style>
+    /* Estilos generales */
+    .page-header {
+        background: #2C3E50;
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+    }
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contraseña" class="control-label"></label>
-                <input asp-for="Contraseña" class="form-control" />
-                <span asp-validation-for="Contraseña" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fechaRegistro" class="control-label"></label>
-                <input asp-for="fechaRegistro" class="form-control" />
-                <span asp-validation-for="fechaRegistro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-        </form>
+        .page-header h1 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 2.5rem;
+        }
+
+        .page-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+    /* Tarjeta del formulario */
+    .form-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 2.5rem;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+        }
+
+    /* Títulos del formulario */
+    .form-title {
+        color: #1f2937;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+        .form-title svg {
+            color: #2C3E50;
+        }
+
+    .form-subtitle {
+        color: #6b7280;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+
+    /* Grid del formulario */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .form-group-full {
+        grid-column: span 2;
+    }
+
+    .form-group-custom {
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+        .form-label i {
+            color: #2C3E50;
+            margin-right: 0.25rem;
+        }
+
+    .form-control-custom {
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .form-control-custom:focus {
+            border-color: #2C3E50;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+            outline: none;
+        }
+
+    /* Icono dentro del input */
+    .input-icon-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+    }
+
+    .input-icon-field {
+        padding-left: 2.5rem;
+    }
+
+    /* Botón de crear */
+    .btn-create {
+        background: #2C3E50;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+        .btn-create:hover {
+            background: #1a2b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+    /* Botón volver */
+    .btn-back {
+        background: white;
+        color: #2C3E50;
+        border: 2px solid #2C3E50;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        margin-top: 1.5rem;
+    }
+
+        .btn-back:hover {
+            background: #2C3E50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+
+    /* Línea decorativa */
+    hr {
+        background: linear-gradient(90deg, transparent, #2C3E50, transparent);
+        height: 2px;
+        border: none;
+        margin: 1.5rem 0;
+        opacity: 0.2;
+    }
+
+    /* Mensajes de validación */
+    .text-danger {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Tooltip de ayuda */
+    .help-tooltip {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+        .help-tooltip svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* Badge de requisitos de contraseña */
+    .password-requirements {
+        background: #f9fafb;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border: 1px solid #e5e7eb;
+    }
+
+        .password-requirements p {
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+    .requirement-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .requirement-list li {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .requirement-list li.valid {
+                color: #10b981;
+            }
+
+            .requirement-list li.invalid {
+                color: #6b7280;
+            }
+
+        .requirement-list svg {
+            width: 16px;
+            height: 16px;
+        }
+</style>
+
+<!-- Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <p>Añade un nuevo usuario al sistema</p>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="form-card">
+
+                <!-- Título decorativo -->
+                <div class="form-title">
+                    <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                    Nuevo Usuario
+                </div>
+                <p class="form-subtitle">Completa los datos del nuevo usuario</p>
+
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <div class="form-grid">
+                        <!-- Nombre -->
+                        <div class="form-group-custom form-group-full">
+                            <label asp-for="Nombre" class="form-label">
+                                <i class="fas fa-user"></i> Nombre completo
+                            </label>
+                            <div class="input-icon-wrapper">
+                                <span class="input-icon">
+                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <input asp-for="Nombre" class="form-control-custom input-icon-field" placeholder="Ej: Juan Pérez" />
+                            </div>
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group-custom form-group-full">
+                            <label asp-for="Email" class="form-label">
+                                <i class="fas fa-envelope"></i> Correo electrónico
+                            </label>
+                            <div class="input-icon-wrapper">
+                                <span class="input-icon">
+                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                    </svg>
+                                </span>
+                                <input asp-for="Email" type="email" class="form-control-custom input-icon-field" placeholder="ej: usuario@email.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="form-group-custom form-group-full">
+                            <label asp-for="Contraseña" class="form-label">
+                                <i class="fas fa-lock"></i> Contraseña
+                            </label>
+                            <div class="input-icon-wrapper">
+                                <span class="input-icon">
+                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <input asp-for="Contraseña" type="password" class="form-control-custom input-icon-field" placeholder="••••••••" />
+                            </div>
+                            <span asp-validation-for="Contraseña" class="text-danger"></span>
+
+                            <!-- Requisitos de contraseña -->
+                            <div class="password-requirements">
+                                <p>Requisitos de la contraseña:</p>
+                                <ul class="requirement-list">
+                                    <li>
+                                        <svg fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Mínimo 6 caracteres
+                                    </li>
+                                    <li>
+                                        <svg fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Al menos una mayúscula
+                                    </li>
+                                    <li>
+                                        <svg fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Al menos un número
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Fecha de registro -->
+                        <div class="form-group-custom">
+                            <label asp-for="fechaRegistro" class="form-label">
+                                <i class="fas fa-calendar-alt"></i> Fecha de registro
+                            </label>
+                            <input asp-for="fechaRegistro" class="form-control-custom" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="fechaRegistro" class="text-danger"></span>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="form-group-custom">
+                            <label asp-for="Estado" class="form-label">
+                                <i class="fas fa-toggle-on"></i> Estado
+                            </label>
+                            <select asp-for="Estado" class="form-control-custom">
+                                <option value="">Selecciona un estado</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                                <option value="Pendiente">Pendiente</option>
+                            </select>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+
+                        <!-- Nota informativa -->
+                        <div class="form-group-custom form-group-full">
+                            <div class="help-tooltip">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Los campos marcados con * son obligatorios</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <button type="submit" class="btn-create">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Crear usuario
+                    </button>
+                </form>
+
+                <div class="text-center">
+                    <a asp-action="Index" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Volver a la lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
