@@ -14,6 +14,23 @@ namespace Scriptum
             
         }
 
+        public static string SelectType(Models.Tipo tipo)
+        {
+            switch (tipo)
+            {
+                case Models.Tipo.LIBRO:
+                    return "Libros";
+                case Models.Tipo.REVISTA:
+                    return "Revistas";
+                case Models.Tipo.COMIC:
+                    return "Cómics";
+                case Models.Tipo.ARTICULO:
+                    return "Artículos";
+                default:
+                    return "Todos los tipos";
+            }
+        }
+
         public static string SelectSearchFilters(string idGenere)
         {
             switch (idGenere)

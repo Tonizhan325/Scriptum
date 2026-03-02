@@ -391,11 +391,11 @@
                                 <option value="cienc">Ciencia</option>
                                 <option value="dram">Drama</option>
                                 <option value="fant">Fantasía</option>
-                                <option value="filo" ">Filosofía</option>
-                                <option value="hist" ">Historia</option>
-                                <option value="roma" ">Romance</option>
-                                <option value="susp" ">Suspense</option>
-                                <option value="terr" ">Terror</option>
+                                <option value="filo" >Filosofía</option>
+                                <option value="hist" >Historia</option>
+                                <option value="roma" >Romance</option>
+                                <option value="susp" >Suspense</option>
+                                <option value="terr" >Terror</option>
                                 <option value="Otro">Otro</option>
                             </select>
                             <span asp-validation-for="IdGenero" class="text-danger"></span>
@@ -415,6 +415,19 @@
                                 <input asp-for="NombreAutor" class="form-control-custom input-icon-field" placeholder="Ej: Gabriel García Márquez" />
                             </div>
                             <span asp-validation-for="NombreAutor" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tipo de recurso -->
+                        <div class="form-group-custom">
+                            <label asp-for="Tipo" class="form-label">
+                                <i class="fas fa-language"></i> Tipo de recurso
+                            </label>
+                            <select asp-for="Tipo"
+                                    class="form-control-custom"
+                                    asp-items="Html.GetEnumSelectList<Scriptum.Models.Tipo>()">
+                                <option value="">Selecciona un tipo</option>
+                            </select>
+                            <span asp-validation-for="Tipo" class="text-danger"></span>
                         </div>
 
                         <!-- Portada del libro -->

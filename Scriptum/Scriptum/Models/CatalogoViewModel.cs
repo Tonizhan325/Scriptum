@@ -9,5 +9,6 @@
         public int TotalPaginas { get; set; }
         public string FiltroBusqueda { get; set; }
         public string? GeneroSeleccionado { get; set; }
+        public string? TipoSeleccionado { get; set; }
     }
 }
