@@ -4,15 +4,6 @@ namespace Scriptum
 {
     public class Utils
     {
-        public static string FillEmptyImageUrl(string url)
-        {
-            if (url == null)
-            {
-                url = "https://res.cloudinary.com/dfd0scyd8/image/upload/v1771443710/fprtspu1qmmwsv3edqf1.png";
-            }
-            return url;
-            
-        }
 
         public static string SelectSearchFilters(string idGenere)
         {

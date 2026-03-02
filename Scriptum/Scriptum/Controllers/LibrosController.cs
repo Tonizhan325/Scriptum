@@ -138,34 +138,91 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,NombreAutor,EnlaceImagen,IdGenero")] Libro libro)
+        public async Task<IActionResult> Edit(int id, Libro libro, IFormFile? imagenArchivo)
         {
             if (id != libro.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Buscar el libro existente
+            var libroEnBd = await _context.Libros.FindAsync(id);
+            if (libroEnBd == null)
+            {
+                return NotFound();
+            }
+
+            // Actualizar propiedades
+            libroEnBd.Titulo = libro.Titulo;
+            libroEnBd.Descripcion = libro.Descripcion;
+            libroEnBd.Idioma = libro.Idioma;
+            libroEnBd.TamañoArchivo = libro.TamañoArchivo;
+            libroEnBd.URL = libro.URL;
+            libroEnBd.FechaRevision = libro.FechaRevision;
+            libroEnBd.NombreAutor = libro.NombreAutor;
+            libroEnBd.IdGenero = libro.IdGenero;
+
+            // PROCESAR IMAGEN
+            if (imagenArchivo != null && imagenArchivo.Length > 0)
             {
                 try
                 {
-                    _context.Update(libro);
-                    await _context.SaveChangesAsync();
+                    // Validar extensión
+                    var extension = Path.GetExtension(imagenArchivo.FileName).ToLower();
+
+                    // Generar nombre único
+                    var fileName = $"{Guid.NewGuid()}{extension}";
+
+                    // Ruta completa donde se guardará
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "portadas");
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    // Crear directorio si no existe
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Guardar archivo
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imagenArchivo.CopyToAsync(stream);
+                    }
+
+                    // ELIMINAR IMAGEN ANTERIOR
+                    if (!string.IsNullOrEmpty(libroEnBd.EnlaceImagen))
+                    {
+                        var oldFilePath = Path.Combine(uploadsFolder, libroEnBd.EnlaceImagen);
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+
+                    // ASIGNAR NUEVO NOMBRE DE ARCHIVO
+                    libroEnBd.EnlaceImagen = fileName;
+
+                    // Mensaje de depuración (TempData)
+                    TempData["Debug"] = $"Imagen guardada: {fileName}";
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!LibroExists(libro.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ModelState.AddModelError("", $"Error al guardar la imagen: {ex.Message}");
+                    return View(libroEnBd);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(libro);
+
+            // Guardar cambios en BD
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Libro actualizado correctamente";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Método helper para verificar si el libro existe
+        private bool LibroExists(int id)
+        {
+            return _context.Libros.Any(e => e.Id == id);
         }
 
         // GET: Libros/Delete/5
@@ -201,9 +258,5 @@ namespace Scriptum.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LibroExists(int id)
-        {
-            return _context.Libros.Any(e => e.Id == id);
-        }
     }
 }

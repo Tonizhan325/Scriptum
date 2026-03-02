@@ -391,11 +391,11 @@
                                 <option value="cienc">Ciencia</option>
                                 <option value="dram">Drama</option>
                                 <option value="fant">Fantasía</option>
-                                <option value="filo" ">Filosofía</option>
-                                <option value="hist" ">Historia</option>
-                                <option value="roma" ">Romance</option>
-                                <option value="susp" ">Suspense</option>
-                                <option value="terr" ">Terror</option>
+                                <option value="filo">Filosofía</option>
+                                <option value="hist">Historia</option>
+                                <option value="roma">Romance</option>
+                                <option value="susp">Suspense</option>
+                                <option value="terr">Terror</option>
                                 <option value="Otro">Otro</option>
                             </select>
                             <span asp-validation-for="IdGenero" class="text-danger"></span>
@@ -418,10 +418,23 @@
                         </div>
 
                         <!-- Portada del libro -->
+                        <!-- Portada del libro - SECCIÓN CORREGIDA -->
                         <div class="form-group-custom form-group-full">
                             <label class="form-label">
                                 <i class="fas fa-image"></i> Portada del libro
                             </label>
+
+                            <!-- MOSTRAR IMAGEN ACTUAL -->
+                            @if (!string.IsNullOrEmpty(Model.EnlaceImagen))
+                            {
+                                <div class="current-image-container mb-3">
+                                    <p class="mb-1"><strong>Imagen actual:</strong></p>
+                                    <img src="~/images/portadas/@Model.EnlaceImagen"
+                                         alt="Portada actual"
+                                         style="max-width: 150px; max-height: 200px; border-radius: 8px; border: 1px solid #ddd;" />
+                                </div>
+                            }
+
                             <input type="file" name="imagenArchivo" class="form-control-custom" accept="image/*" id="imagenInput" />
                             <div class="help-tooltip">
                                 <svg fill="currentColor" viewBox="0 0 20 20">
@@ -432,6 +445,7 @@
 
                             <!-- Preview de imagen -->
                             <div class="image-preview" id="imagePreview" style="display: none;">
+                                <p class="mb-1 mt-2"><strong>Nueva imagen:</strong></p>
                                 <img id="previewImg" src="#" alt="Vista previa" />
                                 <p class="help-tooltip mt-2">Nueva portada seleccionada</p>
                             </div>
@@ -466,19 +480,38 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <!-- Script para previsualizar la imagen -->
     <script>
         document.getElementById('imagenInput').addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
             const file = e.target.files[0];
+
             if (file) {
+                // Validar que sea una imagen
+                if (!file.type.startsWith('image/')) {
+                    alert('Por favor selecciona un archivo de imagen válido');
+                    this.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+
+                // Validar tamaño (5MB máximo)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('La imagen no debe superar los 5MB');
+                    this.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
                 }
                 reader.readAsDataURL(file);
             } else {
-                document.getElementById('imagePreview').style.display = 'none';
+                preview.style.display = 'none';
+                previewImg.src = '#';
             }
         });
     </script>
