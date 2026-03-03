@@ -2,69 +2,282 @@
 @using Microsoft.AspNetCore.Http.Features
 @model TwoFactorAuthenticationModel
 @{
-    ViewData["Title"] = "Two-factor authentication (2FA)";
+    ViewData["Title"] = "Autenticación en dos pasos";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
-@{
-    var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
-    @if (consentFeature?.CanTrack ?? true)
-    {
-        @if (Model.Is2faEnabled)
-        {
-            if (Model.RecoveryCodesLeft == 0)
-            {
-                <div class="alert alert-danger">
-                    <strong>You have no recovery codes left.</strong>
-                    <p>You must <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a> before you can log in with a recovery code.</p>
-                </div>
-            }
-            else if (Model.RecoveryCodesLeft == 1)
-            {
-                <div class="alert alert-danger">
-                    <strong>You have 1 recovery code left.</strong>
-                    <p>You can <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
-                </div>
-            }
-            else if (Model.RecoveryCodesLeft <= 3)
-            {
-                <div class="alert alert-warning">
-                    <strong>You have @Model.RecoveryCodesLeft recovery codes left.</strong>
-                    <p>You should <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
-                </div>
-            }
-
-            if (Model.IsMachineRemembered)
-            {
-                <form method="post" style="display: inline-block">
-                    <button type="submit" class="btn btn-primary">Forget this browser</button>
-                </form>
-            }
-            <a asp-page="./Disable2fa" class="btn btn-primary">Disable 2FA</a>
-            <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Reset recovery codes</a>
-        }
-
-        <h4>Authenticator app</h4>
-        @if (!Model.HasAuthenticator)
-        {
-            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Add authenticator app</a>
-        }
-        else
-        {
-            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Set up authenticator app</a>
-            <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Reset authenticator app</a>
-        }
+<style>
+    /* Estilos generales */
+    .page-header {
+        background: #2C3E50;
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
     }
-    else
-    {
-        <div class="alert alert-danger">
-            <strong>Privacy and cookie policy have not been accepted.</strong>
-            <p>You must accept the policy before you can enable two factor authentication.</p>
+    
+    .page-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 2rem;
+    }
+    
+    .page-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+    }
+    
+    /* Tarjeta */
+    .twofa-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 2.5rem;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+    
+    .twofa-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .twofa-title {
+        color: #1f2937;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-bottom: 2px solid #f3f4f6;
+        padding-bottom: 1rem;
+    }
+    
+    .twofa-title svg {
+        color: #2C3E50;
+    }
+    
+    .twofa-subtitle {
+        color: #374151;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 1.5rem 0 1rem 0;
+    }
+    
+    /* Alertas */
+    .alert {
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid;
+    }
+    
+    .alert-danger {
+        background: #fee2e2;
+        border-left-color: #ef4444;
+        color: #991b1b;
+    }
+    
+    .alert-warning {
+        background: #ffedd5;
+        border-left-color: #f97316;
+        color: #7b341e;
+    }
+    
+    .alert-info {
+        background: #dbeafe;
+        border-left-color: #3b82f6;
+        color: #1e3a8a;
+    }
+    
+    .alert a {
+        color: inherit;
+        font-weight: 600;
+        text-decoration: underline;
+    }
+    
+    /* Botones */
+    .btn-2fa {
+        background: #2C3E50;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .btn-2fa:hover {
+        background: #1a2b3a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        color: white;
+    }
+    
+    .btn-2fa-secondary {
+        background: white;
+        color: #2C3E50;
+        border: 2px solid #2C3E50;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .btn-2fa-secondary:hover {
+        background: #2C3E50;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+    }
+    
+    /* Grid de botones */
+    .button-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+    
+    /* Códigos de recuperación */
+    .recovery-codes {
+        background: #f9fafb;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        font-family: monospace;
+        font-size: 1.1rem;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+    }
+</style>
+
+<!-- Header -->
+<div class="page-header">
+    <div class="container">
+        <h3>@ViewData["Title"]</h3>
+        <p>Configura la verificación en dos pasos</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="twofa-card">
+                
+                <!-- Título -->
+                <div class="twofa-title">
+                    <svg width="28" height="28" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 2a6 6 0 100 12 6 6 0 000-12zm0 4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+                    </svg>
+                    Autenticación en dos pasos
+                </div>
+                
+                <partial name="_StatusMessage" for="StatusMessage" />
+                
+                @{
+                    var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
+                    @if (consentFeature?.CanTrack ?? true)
+                    {
+                        @if (Model.Is2faEnabled)
+                        {
+                            if (Model.RecoveryCodesLeft == 0)
+                            {
+                                <div class="alert alert-danger">
+                                    <strong>No te quedan códigos de recuperación.</strong>
+                                    <p>Debes <a asp-page="./GenerateRecoveryCodes">generar un nuevo conjunto de códigos de recuperación</a> antes de poder iniciar sesión con un código de recuperación.</p>
+                                </div>
+                            }
+                            else if (Model.RecoveryCodesLeft == 1)
+                            {
+                                <div class="alert alert-danger">
+                                    <strong>Te queda 1 código de recuperación.</strong>
+                                    <p>Puedes <a asp-page="./GenerateRecoveryCodes">generar un nuevo conjunto de códigos de recuperación</a>.</p>
+                                </div>
+                            }
+                            else if (Model.RecoveryCodesLeft <= 3)
+                            {
+                                <div class="alert alert-warning">
+                                    <strong>Te quedan @Model.RecoveryCodesLeft códigos de recuperación.</strong>
+                                    <p>Deberías <a asp-page="./GenerateRecoveryCodes">generar un nuevo conjunto de códigos de recuperación</a>.</p>
+                                </div>
+                            }
+
+                            if (Model.IsMachineRemembered)
+                            {
+                                <form method="post" style="display: inline-block">
+                                    <button type="submit" class="btn-2fa-secondary">
+                                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                        </svg>
+                                        Olvidar este navegador
+                                    </button>
+                                </form>
+                            }
+                            
+                            <div class="button-grid">
+                                <a asp-page="./Disable2fa" class="btn-2fa-secondary">Desactivar 2FA</a>
+                                <a asp-page="./GenerateRecoveryCodes" class="btn-2fa-secondary">Resetear códigos de recuperación</a>
+                            </div>
+                        }
+
+                        <h4 class="twofa-subtitle">Aplicación de autenticación</h4>
+                        
+                        <div class="button-grid">
+                            @if (!Model.HasAuthenticator)
+                            {
+                                <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn-2fa">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                    </svg>
+                                    Añadir app de autenticación
+                                </a>
+                            }
+                            else
+                            {
+                                <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn-2fa">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                    Configurar app de autenticación
+                                </a>
+                                <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn-2fa-secondary">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                                    </svg>
+                                    Resetear app de autenticación
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>No se han aceptado las políticas de privacidad y cookies.</strong>
+                            <p>Debes aceptar la política antes de poder habilitar la autenticación de dos factores.</p>
+                        </div>
+                    }
+                }
+            </div>
         </div>
-    }
-}
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

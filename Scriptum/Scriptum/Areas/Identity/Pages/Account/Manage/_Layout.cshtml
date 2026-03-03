@@ -1,5 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -9,17 +9,125 @@
     }
 }
 
-<h1>Configuración de la cuenta</h1>
+<style>
+    /* Estilos generales */
+    .page-header {
+        background: #2C3E50;
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+    }
 
-<div>
-    <h2>Cambia la configuración de tu cuenta</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
+        .page-header h1 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 2.5rem;
+        }
+
+        .page-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+    /* Contenedor principal */
+    .settings-container {
+        margin-bottom: 3rem;
+    }
+
+    /* Título de sección */
+    .section-title {
+        color: #1f2937;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+        .section-title svg {
+            color: #2C3E50;
+        }
+
+    .section-subtitle {
+        color: #6b7280;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+
+    /* Línea decorativa */
+    hr {
+        background: linear-gradient(90deg, transparent, #2C3E50, transparent);
+        height: 2px;
+        border: none;
+        margin: 1.5rem 0;
+        opacity: 0.2;
+    }
+
+    /* Tarjeta de contenido */
+    .content-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 2rem;
+        border: 1px solid #e5e7eb;
+        min-height: 400px;
+    }
+
+    /* Ajustes para el layout de filas */
+    .row.settings-row {
+        margin: 0;
+    }
+
+    .col-md-3.settings-nav {
+        padding-right: 1.5rem;
+    }
+
+    .col-md-9.settings-content {
+        padding-left: 1.5rem;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .col-md-3.settings-nav {
+            padding-right: 0;
+            margin-bottom: 2rem;
+        }
+
+        .col-md-9.settings-content {
+            padding-left: 0;
+        }
+    }
+</style>
+
+<!-- Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>Configuración de la cuenta</h1>
+        <p>Administra tu perfil y preferencias</p>
+    </div>
+</div>
+
+<div class="container settings-container">
+    <div class="section-title">
+        <svg width="28" height="28" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+        </svg>
+        Panel de control
+    </div>
+    <p class="section-subtitle">Cambia la configuración de tu cuenta</p>
+
+    <div class="row settings-row">
+        <div class="col-md-3 settings-nav">
             <partial name="_ManageNav" />
         </div>
-        <div class="col-md-9">
-            @RenderBody()
+        <div class="col-md-9 settings-content">
+            <div class="content-card">
+                @RenderBody()
+            </div>
         </div>
     </div>
 </div>

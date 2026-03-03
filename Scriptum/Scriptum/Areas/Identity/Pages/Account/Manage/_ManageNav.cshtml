@@ -2,14 +2,165 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Cuenta</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Correo electrónico</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Contraseña</a></li>
-    @if (hasExternalLogins)
-    {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+
+<style>
+    /* Navegación de configuración */
+    .settings-nav-container {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 1.5rem;
+        border: 1px solid #e5e7eb;
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Autenticación</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Datos personales</a></li>
-</ul>
+
+    .settings-nav-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #374151;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #f3f4f6;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .settings-nav-title svg {
+            color: #2C3E50;
+        }
+
+    /* Lista de navegación */
+    .nav-settings {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-settings-item {
+        width: 100%;
+    }
+
+    .nav-settings-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        color: #4b5563;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+        .nav-settings-link svg {
+            width: 18px;
+            height: 18px;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+        }
+
+        .nav-settings-link:hover {
+            background: #f3f4f6;
+            color: #2C3E50;
+            transform: translateX(5px);
+        }
+
+            .nav-settings-link:hover svg {
+                color: #2C3E50;
+            }
+
+        .nav-settings-link.active {
+            background: #2C3E50;
+            color: white;
+            border-color: #2C3E50;
+        }
+
+            .nav-settings-link.active svg {
+                color: white;
+            }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .nav-settings {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .nav-settings-item {
+            width: auto;
+            flex: 1 1 auto;
+        }
+
+        .nav-settings-link {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="settings-nav-container">
+    <div class="settings-nav-title">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.616a1 1 0 01.894-1.79l1.599.8L9 4.323V3a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Menú de configuración
+    </div>
+
+    <ul class="nav-settings">
+        <li class="nav-settings-item">
+            <a class="nav-settings-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                Cuenta
+            </a>
+        </li>
+        <li class="nav-settings-item">
+            <a class="nav-settings-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+                Correo electrónico
+            </a>
+        </li>
+        <li class="nav-settings-item">
+            <a class="nav-settings-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+                Contraseña
+            </a>
+        </li>
+        @if (hasExternalLogins)
+        {
+            <li class="nav-settings-item">
+                <a id="external-logins" class="nav-settings-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                    Accesos externos
+                </a>
+            </li>
+        }
+        <li class="nav-settings-item">
+            <a class="nav-settings-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 2a6 6 0 100 12 6 6 0 000-12zm0 4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+                </svg>
+                Autenticación
+            </a>
+        </li>
+        <li class="nav-settings-item">
+            <a class="nav-settings-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                Datos personales
+            </a>
+        </li>
+    </ul>
+</div>

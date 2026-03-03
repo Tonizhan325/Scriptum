@@ -1,41 +1,347 @@
 ﻿@page
 @model EmailModel
 @{
-    ViewData["Title"] = "Manage Email";
+    ViewData["Title"] = "Gestionar correo";
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="email-form" method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            @if (Model.IsEmailConfirmed)
-            {
-                <div class="form-floating mb-3 input-group">
-                    <input asp-for="Email" class="form-control" placeholder="Introduce tu correo electrónico" disabled />
-                        <div class="input-group-append">
-                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+<style>
+    /* Estilos generales */
+    .page-header {
+        background: #2C3E50;
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+    }
+
+        .page-header h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 2rem;
+        }
+
+        .page-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+    /* Tarjeta del formulario */
+    .form-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        padding: 2.5rem;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .form-title {
+        color: #1f2937;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-bottom: 2px solid #f3f4f6;
+        padding-bottom: 1rem;
+    }
+
+        .form-title svg {
+            color: #2C3E50;
+        }
+
+    .form-group-custom {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+        .form-label i {
+            color: #2C3E50;
+            margin-right: 0.25rem;
+        }
+
+    .form-control-custom {
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .form-control-custom:focus {
+            border-color: #2C3E50;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+            outline: none;
+        }
+
+        .form-control-custom:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+    /* Botón actualizar */
+    .btn-update {
+        background: #2C3E50;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+        .btn-update:hover {
+            background: #1a2b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+    /* Botón de verificación */
+    .btn-verify {
+        background: transparent;
+        color: #2C3E50;
+        border: 2px solid #2C3E50;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-decoration: none;
+        margin-top: 0.5rem;
+        text-align: center;
+        width: 100%;
+    }
+
+        .btn-verify:hover {
+            background: #2C3E50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+
+    /* Grupo de input con icono */
+    .input-group-custom {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+    }
+
+    .input-icon-field {
+        padding-left: 2.5rem;
+    }
+
+    /* Badge de verificación */
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #10b981;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+        .verified-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+    .unverified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #f59e0b;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+        .unverified-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+    /* Línea decorativa */
+    hr {
+        background: linear-gradient(90deg, transparent, #2C3E50, transparent);
+        height: 2px;
+        border: none;
+        margin: 1.5rem 0;
+        opacity: 0.2;
+    }
+
+    /* Mensajes de validación */
+    .text-danger {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Status message */
+    .status-message {
+        background: #f3f4f6;
+        border-left: 4px solid #2C3E50;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        margin-bottom: 1.5rem;
+        color: #4b5563;
+    }
+
+    /* Email actual */
+    .current-email {
+        background: #f9fafb;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e5e7eb;
+    }
+
+    .current-email-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+    }
+
+    .current-email-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+</style>
+
+<!-- Header -->
+<div class="page-header">
+    <div class="container">
+        <h3>@ViewData["Title"]</h3>
+        <p>Administra tu dirección de correo electrónico</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="form-card">
+
+                <!-- Título decorativo -->
+                <div class="form-title">
+                    <svg width="28" height="28" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    Correo electrónico
+                </div>
+
+                <partial name="_StatusMessage" for="StatusMessage" />
+
+                <!-- Email actual y estado de verificación -->
+                <div class="current-email">
+                    <div class="current-email-label">Email actual</div>
+                    <div class="current-email-value">
+                        @Model.Email
+                        @if (Model.IsEmailConfirmed)
+                        {
+                            <span class="verified-badge">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                Verificado
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="unverified-badge">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                No verificado
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <form id="email-form" method="post">
+                    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+                    @if (!Model.IsEmailConfirmed)
+                    {
+                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn-verify">
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" style="margin-right: 0.5rem;">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            Enviar correo de verificación
+                        </button>
+                    }
+
+                    <!-- Nuevo email -->
+                    <div class="form-group-custom">
+                        <label asp-for="Input.NewEmail" class="form-label">
+                            <i class="fas fa-envelope"></i> Nuevo correo electrónico
+                        </label>
+                        <div class="input-group-custom">
+                            <span class="input-icon">
+                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                </svg>
+                            </span>
+                            <input asp-for="Input.NewEmail" class="form-control-custom input-icon-field" placeholder="nuevo@email.com" />
                         </div>
-                    <label asp-for="Email" class="form-label"></label>
-                </div>
-            }
-            else
-            {
-                <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" placeholder="Introduce tu correo electrónico" disabled />
-                    <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Enviar la verificación del correo</button>
-                </div>
-            }
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Introduce la contraseña" />
-                <label asp-for="Input.NewEmail" class="form-label"></label>
-                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                    </div>
+
+                    <hr />
+
+                    <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn-update">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                        Actualizar correo electrónico
+                    </button>
+                </form>
             </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Cambiar contraseña</button>
-        </form>
+        </div>
     </div>
 </div>
 
