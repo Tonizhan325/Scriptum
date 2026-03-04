@@ -63,12 +63,13 @@
 
 <!--Esto es pura apariencia, hay que cambiarlo-->
 @{
+    string tipo = null;
     string generoSelec = Utils.SelectSearchFilters(Model.GeneroSeleccionado);
-    string tipo = Utils.SelectType(Model.TipoSeleccionado);
+    string tipoRecurso = Utils.SelectType(tipo);
 }
 
 <div style="margin-bottom:2rem; margin-top:2rem">
-    <span style="color:grey;">Estás filtrando por: @generoSelec en @*@tipoRecursoSelec*@</span>
+    <span style="color:grey;">Estás filtrando por: @generoSelec en @tipoRecurso</span>
 </div>
 
 <section>
@@ -80,6 +81,7 @@
                 {
                     <option value="@item.Value" selected="@(Context.Request.Query["tipoRecurso"] == item.Value)">
                         @item.Text
+                        @tipo = @item.Text;
                     </option>
                 }
             </select>
