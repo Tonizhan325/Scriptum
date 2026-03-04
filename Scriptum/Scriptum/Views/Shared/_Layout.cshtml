@@ -7,6 +7,110 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+
+        .avatar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #2C3E50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+
+            .avatar:hover {
+                background: #1a2b3a;
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+            }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            min-width: 200px;
+            padding: 8px 0;
+            display: none;
+            z-index: 1000;
+            border: 1px solid #e5e7eb;
+        }
+
+            .dropdown-menu-custom.show {
+                display: block;
+                animation: slideDown 0.3s ease;
+            }
+
+
+        @@keyframes slideDown {
+            from{
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #374151;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+            .dropdown-item:hover {
+                background: #f3f4f6;
+                color: #2C3E50;
+            }
+
+            .dropdown-item svg {
+                opacity: 0.7;
+            }
+
+            .dropdown-item:hover svg {
+                opacity: 1;
+            }
+
+        .search-wrapper {
+            flex: 1;
+        }
+
+        .search-input {
+            border-radius: 20px;
+            border: 2px solid #e5e7eb;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+
+            .search-input:focus {
+                border-color: #2C3E50;
+                box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+                outline: none;
+            }
+    </style>
+
+   
+
 
 </head>
 
@@ -78,8 +182,28 @@
                         </div>
 
                         <partial name="_LoginPartial" />
-                        <div class="avatar">
-                            👤
+
+                        <div class="avatar-dropdown">
+                            <div class="avatar" id="avatarBtn">
+                                👤
+                            </div>
+                            <div class="dropdown-menu-custom" id="dropdownMenu">
+                                <a href="~/MisDatos/Edit" class="dropdown-item">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                    </svg>
+                                    Configuración
+                                </a>
+                                <a href="/Libros/Create" class="dropdown-item">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                        <line x1="12" y1="7" x2="12" y2="7"></line>
+                                    </svg>
+                                    Subir libros
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,5 +226,29 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const avatarBtn = document.getElementById('avatarBtn');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            if (avatarBtn) {
+                avatarBtn.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                });
+            }
+
+            // Cerrar el menú al hacer clic fuera
+            window.addEventListener('click', function(event) {
+                const avatarDropdown = document.getElementById('avatarDropdown');
+                if (!avatarDropdown.contains(event.target)) {
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
