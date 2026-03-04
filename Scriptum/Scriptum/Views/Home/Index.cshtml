@@ -18,48 +18,38 @@
             transform: translateY(-5px);
         }
 
-    #panel1{
+    #panel1, #panel2, #panel3 {
         width: 95%;
         height: 50vh;
-        background-color: blue;
+        background-color: #2C3E50;
         margin: 0 auto;
         text-align: center;
         align-content: center;
         font-size: 6rem;
         margin-top: 5%;
         border-radius: 5vw;
-        color: lightblue;
+        color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
-    #panel2{
-        width: 95%;
-        height: 50vh;
-        background-color: green;
-        margin: 0 auto;
-        text-align: center;
-        align-content: center;
-        font-size: 6rem;
-        margin-top: 5%;
-        border-radius: 5vw;
-        color: lightgreen;
-    }
+        #panel1:hover, #panel2:hover, #panel3:hover {
+            background-color: #1a2b3a;
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.4);
+        }
 
-    #panel3 {
-        width: 95%;
-        height: 50vh;
-        background-color: red;
-        margin: 0 auto;
-        text-align: center;
-        align-content: center;
-        font-size: 6rem;
-        margin-top: 5%;
-        border-radius: 5vw;
-        color: lightcoral;
-    }
+        #panel1 svg, #panel2 svg, #panel3 svg {
+            transition: transform 0.3s ease;
+        }
 
-    a{
-        text-decoration: none;
-    }
+        #panel1:hover svg, #panel2:hover svg, #panel3:hover svg {
+            transform: scale(1.1);
+        }
 
 </style>
 
@@ -123,9 +113,35 @@
     }
     @if (User.IsInRole("Administrador"))
     {
-        <a href="~/Usuarios/Index"><div id="panel1">Ver usuarios</div></a>
-        <a href="~/Libros/Index"><div id="panel2">Ver libros</div></a>
-        <a href="~/Generos/Index"><div id="panel3">Ver géneros</div></a>
+        <a href="~/Usuarios/Index" style="text-decoration: none; display: block;">
+            <div id="panel1">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="display: block; margin: 0 auto 20px auto;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Ver usuarios
+            </div>
+        </a>
+
+        <a href="~/Libros/Index" style="text-decoration: none; display: block;">
+            <div id="panel2">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="display: block; margin: 0 auto 20px auto;">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                Ver libros
+            </div>
+        </a>
+
+        <a href="~/Generos/Index" style="text-decoration: none; display: block;">
+            <div id="panel3">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="display: block; margin: 0 auto 20px auto;">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                Ver géneros
+            </div>
+        </a>
     }
 }
 else
