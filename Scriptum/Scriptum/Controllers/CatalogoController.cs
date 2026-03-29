@@ -56,7 +56,8 @@ namespace Scriptum.Controllers
                 PaginaActual = pagina,
                 TotalPaginas = (int)Math.Ceiling(totalRegistros / (double)registrosPorPagina),
                 FiltroBusqueda = buscar,
-                GeneroSeleccionado = generoId
+                GeneroSeleccionado = generoId,
+                TipoSeleccionado = tipoRecurso
             });
         }
 

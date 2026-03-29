@@ -22,9 +22,9 @@ namespace Scriptum
                 case 0:
                     return "Libros";
                 case 1:
-                    return "Revistas";
-                case 2:
                     return "Cómics";
+                case 2:
+                    return "Revistas";
                 case 3:
                     return "Artículos";
                 default:

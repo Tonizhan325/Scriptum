@@ -49,7 +49,7 @@
     {
         <a asp-action="Index"
            asp-route-generoId="@item.Id"
-           asp-route-tipoRecurso="@Context.Request.Query["tipoRecurso"]"
+           asp-route-tipoRecurso="@Model.TipoSeleccionado"
            asp-route-buscar="@Model.FiltroBusqueda"
            style="color: #ecf0f1; display:block; margin-bottom: 5px;">
             @item.Nombre
@@ -63,9 +63,8 @@
 
 <!--Esto es pura apariencia, hay que cambiarlo-->
 @{
-    string tipo = null;
     string generoSelec = Utils.SelectSearchFilters(Model.GeneroSeleccionado);
-    string tipoRecurso = Utils.SelectType(tipo);
+    string tipoRecurso = Utils.SelectType(Model.TipoSeleccionado);
 }
 
 <div style="margin-bottom:2rem; margin-top:2rem">
@@ -79,9 +78,8 @@
                 <option value="">Todos los tipos</option>
                 @foreach (var item in Html.GetEnumSelectList<Scriptum.Models.Tipo>())
                 {
-                    <option value="@item.Value" selected="@(Context.Request.Query["tipoRecurso"] == item.Value)">
+                    <option value="@item.Value" selected="@(Model.TipoSeleccionado?.ToString() == item.Value)">
                         @item.Text
-                        @tipo = @item.Text;
                     </option>
                 }
             </select>
