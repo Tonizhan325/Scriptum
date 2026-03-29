@@ -88,7 +88,7 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,EnlaceImagen")] Libro libro, IFormFile imagenArchivo)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo)
 
         {
             if (ModelState.IsValid)
@@ -161,6 +161,7 @@ namespace Scriptum.Controllers
             libroEnBd.FechaRevision = libro.FechaRevision;
             libroEnBd.NombreAutor = libro.NombreAutor;
             libroEnBd.IdGenero = libro.IdGenero;
+            libroEnBd.Tipo = libro.Tipo;
 
             // PROCESAR IMAGEN
             if (imagenArchivo != null && imagenArchivo.Length > 0)

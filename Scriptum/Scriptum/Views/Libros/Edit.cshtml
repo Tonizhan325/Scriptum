@@ -417,6 +417,19 @@
                             <span asp-validation-for="NombreAutor" class="text-danger"></span>
                         </div>
 
+                        <!-- Tipo de recurso -->
+                        <div class="form-group-custom">
+                            <label asp-for="Tipo" class="form-label">
+                                <i class="fas fa-language"></i> Tipo de recurso
+                            </label>
+                            <select asp-for="Tipo"
+                                    class="form-control-custom"
+                                    asp-items="Html.GetEnumSelectList<Scriptum.Models.Tipo>()">
+                                <option value="">Selecciona un tipo</option>
+                            </select>
+                            <span asp-validation-for="Tipo" class="text-danger"></span>
+                        </div>
+
                         <!-- Portada del libro -->
                         <!-- Portada del libro - SECCIÓN CORREGIDA -->
                         <div class="form-group-custom form-group-full">

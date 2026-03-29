@@ -29,12 +29,16 @@ namespace Scriptum.Controllers
 
         //    return View(vm);
         //}
-        public async Task<IActionResult> Index(string? generoId, string buscar, int pagina = 1)
+        public async Task<IActionResult> Index(string? generoId, int? tipoRecurso, string buscar, int pagina = 1)
         {
             int registrosPorPagina = 6;
             var query = _context.Libros.AsQueryable();
 
             // Filtros
+            if (tipoRecurso != null)
+            {
+                query = query.Where(l => l.Tipo == (Scriptum.Models.Tipo)tipoRecurso);
+            };
             if (generoId != null) query = query.Where(l => l.IdGenero == generoId);
             if (!string.IsNullOrEmpty(buscar)) query = query.Where(l => l.Titulo.Contains(buscar));
 
@@ -52,7 +56,8 @@ namespace Scriptum.Controllers
                 PaginaActual = pagina,
                 TotalPaginas = (int)Math.Ceiling(totalRegistros / (double)registrosPorPagina),
                 FiltroBusqueda = buscar,
-                GeneroSeleccionado = generoId
+                GeneroSeleccionado = generoId,
+                TipoSeleccionado = tipoRecurso
             });
         }
 

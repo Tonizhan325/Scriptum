@@ -5,11 +5,30 @@ namespace Scriptum
     public class Utils
     {
 
+        public static string SelectType(int? tipo)
+        {
+            Console.WriteLine(tipo);
+            switch (tipo)
+            {
+                case 0:
+                    return "Libros";
+                case 1:
+                    return "Cómics";
+                case 2:
+                    return "Revistas";
+                case 3:
+                    return "Artículos";
+                default:
+                    return "Todos los tipos";
+            }
+          
+        }
+
         public static string SelectSearchFilters(string idGenere)
         {
             switch (idGenere)
             {
-                case "Rom":
+                case "roma":
                     return "Romance";
                 case "aven":
                     return "Aventura";
