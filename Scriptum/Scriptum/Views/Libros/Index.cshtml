@@ -283,6 +283,14 @@
         white-space: nowrap;
     }
 
+    /* Truncar texto título */
+    .truncate-text-titulo {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     /* Miniatura de imagen */
     .image-thumb {
         width: 40px;
@@ -400,7 +408,7 @@
                             <span class="text-muted">Sin imagen</span>
                         }
                     </td>
-                    <td><strong>@Html.DisplayFor(modelItem => item.Titulo)</strong></td>
+                    <td class="truncate-text-titulo"><strong>@Html.DisplayFor(modelItem => item.Titulo)</strong></td>
                     <td class="truncate-text" title="@item.Descripcion">@Html.DisplayFor(modelItem => item.Descripcion)</td>
                     <td>
                         <span class="badge-language">@Html.DisplayFor(modelItem => item.Idioma)</span>
