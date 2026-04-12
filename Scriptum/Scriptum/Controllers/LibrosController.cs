@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Scriptum.Controllers
 {
@@ -163,48 +165,40 @@ namespace Scriptum.Controllers
             libroEnBd.IdGenero = libro.IdGenero;
             libroEnBd.Tipo = libro.Tipo;
 
-            // PROCESAR IMAGEN
+            // PROCESAR IMAGEN: subir a Cloudinary y guardar la URL segura
             if (imagenArchivo != null && imagenArchivo.Length > 0)
             {
                 try
                 {
-                    // Validar extensión
+                    // (Opcional) validar extensión y tamaño
                     var extension = Path.GetExtension(imagenArchivo.FileName).ToLower();
-
-                    // Generar nombre único
-                    var fileName = $"{Guid.NewGuid()}{extension}";
-
-                    // Ruta completa donde se guardará
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "portadas");
-                    var filePath = Path.Combine(uploadsFolder, fileName);
-
-                    // Crear directorio si no existe
-                    if (!Directory.Exists(uploadsFolder))
+                    var allowed = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    if (!allowed.Contains(extension))
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+                        ModelState.AddModelError("", "Formato de imagen no permitido. Utiliza JPG, PNG o GIF.");
+                        return View(libroEnBd);
                     }
 
-                    // Guardar archivo
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    var uploadParams = new ImageUploadParams()
                     {
-                        await imagenArchivo.CopyToAsync(stream);
-                    }
+                        File = new FileDescription(imagenArchivo.FileName, imagenArchivo.OpenReadStream()),
+                        AssetFolder = "portadas_libros"
+                    };
 
-                    // ELIMINAR IMAGEN ANTERIOR
-                    if (!string.IsNullOrEmpty(libroEnBd.EnlaceImagen))
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+                    if (uploadResult != null && !string.IsNullOrEmpty(uploadResult.SecureUrl?.ToString()))
                     {
-                        var oldFilePath = Path.Combine(uploadsFolder, libroEnBd.EnlaceImagen);
-                        if (System.IO.File.Exists(oldFilePath))
-                        {
-                            System.IO.File.Delete(oldFilePath);
-                        }
+                        // Guardar la URL remota (no se sobrescribe con nombre local)
+                        libroEnBd.EnlaceImagen = uploadResult.SecureUrl.ToString();
+                        // Si quieres gestionar/eliminar la imagen en Cloudinary más tarde,
+                        // considera guardar uploadResult.PublicId en una nueva columna.
                     }
-
-                    // ASIGNAR NUEVO NOMBRE DE ARCHIVO
-                    libroEnBd.EnlaceImagen = fileName;
-
-                    // Mensaje de depuración (TempData)
-                    TempData["Debug"] = $"Imagen guardada: {fileName}";
+                    else
+                    {
+                        ModelState.AddModelError("", "Error al subir la imagen a Cloudinary.");
+                        return View(libroEnBd);
+                    }
                 }
                 catch (Exception ex)
                 {
