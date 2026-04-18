@@ -90,7 +90,7 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
 
         {
             if (ModelState.IsValid)
@@ -110,6 +110,42 @@ namespace Scriptum.Controllers
 
                     // Guardar la URL resultante en el objeto libro
                     libro.EnlaceImagen = uploadResult.SecureUrl.ToString();
+                }
+
+                if (archivoPdf != null && archivoPdf.Length > 0)
+                {
+                    // Validar tipo
+                    if (!archivoPdf.ContentType.Contains("pdf"))
+                    {
+                        ModelState.AddModelError("", "Solo se permiten archivos PDF");
+                        return View(libro);
+                    }
+
+                    // Validar tamaño (10MB)
+                    if (archivoPdf.Length > 50 * 1024 * 1024)
+                    {
+                        ModelState.AddModelError("", "El PDF es demasiado grande");
+                        return View(libro);
+                    }
+
+                    var uploadParamsPdf = new RawUploadParams()
+                    {
+                        File = new FileDescription(archivoPdf.FileName, archivoPdf.OpenReadStream()),
+                        Folder = "libros_pdf",
+                        Type = "upload"
+                    };
+
+                    var uploadResultPdf = await _cloudinary.UploadAsync(uploadParamsPdf);
+
+                    if (uploadResultPdf != null && !string.IsNullOrEmpty(uploadResultPdf.SecureUrl?.ToString()))
+                    {
+                        libro.URL = uploadResultPdf.SecureUrl.ToString();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Error subiendo el PDF a Cloudinary");
+                        return View(libro);
+                    }
                 }
 
                 _context.Add(libro);
@@ -140,7 +176,7 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Libro libro, IFormFile? imagenArchivo)
+        public async Task<IActionResult> Edit(int id, Libro libro, IFormFile? imagenArchivo, IFormFile? archivoPdf)
         {
             if (id != libro.Id)
             {
@@ -203,6 +239,40 @@ namespace Scriptum.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", $"Error al guardar la imagen: {ex.Message}");
+                    return View(libroEnBd);
+                }
+            }
+
+            if (archivoPdf != null && archivoPdf.Length > 0)
+            {
+                if (!archivoPdf.ContentType.Contains("pdf"))
+                {
+                    ModelState.AddModelError("", "Solo se permiten PDFs");
+                    return View(libroEnBd);
+                }
+
+                if (archivoPdf.Length > 50 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("", "El PDF es demasiado grande");
+                    return View(libroEnBd);
+                }
+
+                var uploadParamsPdf = new RawUploadParams()
+                {
+                    File = new FileDescription(archivoPdf.FileName, archivoPdf.OpenReadStream()),
+                    Folder = "libros_pdf",
+                    Type = "upload"
+                };
+
+                var uploadResultPdf = await _cloudinary.UploadAsync(uploadParamsPdf);
+
+                if (uploadResultPdf != null && !string.IsNullOrEmpty(uploadResultPdf.SecureUrl?.ToString()))
+                {
+                    libroEnBd.URL = uploadResultPdf.SecureUrl.ToString();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Error subiendo el PDF");
                     return View(libroEnBd);
                 }
             }

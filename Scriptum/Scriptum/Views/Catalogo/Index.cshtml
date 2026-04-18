@@ -114,7 +114,13 @@
                 <p>@libro.Descripcion</p>
                 <small>Género: @libro.IdGenero | @libro.FechaSubida.ToShortDateString()</small>
             </div>
-            <button style="max-height: 6vh; margin-left:auto; margin-top:auto; width:11rem; background-color:#2C3E50;color:white;">Descargar libro</button>
+            <!--Botón para descarga-->
+            @if (!string.IsNullOrEmpty(@libro.URL))
+            {
+                <a href="@libro.URL" target="_blank" class="btn btn-success" style="max-height:40px">
+                    📥 Descargar PDF
+                </a>
+            }
         </article>
         <hr />
     }
