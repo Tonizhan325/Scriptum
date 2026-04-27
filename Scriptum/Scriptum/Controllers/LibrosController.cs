@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Scriptum.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, Usuario")]
     public class LibrosController : Controller
     {
         private readonly ApplicationDbContext _context;
