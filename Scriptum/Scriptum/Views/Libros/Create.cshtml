@@ -309,7 +309,7 @@
                         </div>
 
                         <!-- Tamaño de archivo -->
-                        <div class="form-group-custom">
+                        @* <div class="form-group-custom">
                             <label asp-for="TamañoArchivo" class="form-label">
                                 <i class="fas fa-database"></i> Tamaño (bytes)
                             </label>
@@ -321,34 +321,41 @@
                                 </svg>
                                 <span>1 MB = 1048576 bytes</span>
                             </div>
-                        </div>
+                        </div> *@
 
+                        <!-- Fecha de subida -->
                         <!-- Fecha de subida -->
                         <div class="form-group-custom">
                             <label asp-for="FechaSubida" class="form-label">
                                 <i class="fas fa-calendar-plus"></i> Fecha de subida
                             </label>
-                            <input asp-for="FechaSubida" class="form-control-custom" type="datetime-local" />
-                            <span asp-validation-for="FechaSubida" class="text-danger"></span>
+
+                            <!-- Se muestra como texto de solo lectura -->
+                            <div class="form-control-custom readonly-field">
+                                @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+
+                            <!-- Campo oculto para enviar el valor al controlador -->
+                            <input type="hidden" asp-for="FechaSubida" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" />
                         </div>
 
                         <!-- Fecha de revisión -->
-                        <div class="form-group-custom">
+                        @* <div class="form-group-custom">
                             <label asp-for="FechaRevision" class="form-label">
                                 <i class="fas fa-calendar-check"></i> Fecha de revisión
                             </label>
                             <input asp-for="FechaRevision" class="form-control-custom" type="datetime-local" />
                             <span asp-validation-for="FechaRevision" class="text-danger"></span>
-                        </div>
+                        </div> *@
 
                         <!-- ID Usuario -->
-                        <div class="form-group-custom">
+                        @* <div class="form-group-custom">
                             <label asp-for="IdUsuario" class="form-label">
                                 <i class="fas fa-user"></i> ID Usuario
                             </label>
                             <input asp-for="IdUsuario" class="form-control-custom" placeholder="Ej: 1" type="number" />
                             <span asp-validation-for="IdUsuario" class="text-danger"></span>
-                        </div>
+                        </div> *@
 
                         <!-- Nombre del autor -->
                         <div class="form-group-custom">

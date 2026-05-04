@@ -15,18 +15,19 @@ using System.IO;
 
 namespace Scriptum.Controllers
 {
-    [Authorize(Roles = "Administrador, Usuario")]
+    //[Authorize(Roles = "Administrador")]
     public class LibrosController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly Cloudinary _cloudinary; //Esto conecta con las imágenes
+        private readonly Usuario _usuario;
 
         public LibrosController(ApplicationDbContext context, Cloudinary cloudinary)
         {
             _context = context;
             _cloudinary = cloudinary;
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Libros
         public async Task<IActionResult> Index(string strCadenaBusqueda, string strCadenaAutor, int? pageNumber)
         {
@@ -60,7 +61,7 @@ namespace Scriptum.Controllers
                 pageSize
             ));
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Libros/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -78,7 +79,7 @@ namespace Scriptum.Controllers
 
             return View(libro);
         }
-
+        [Authorize]
         // GET: Libros/Create
         public IActionResult Create()
         {
@@ -88,9 +89,10 @@ namespace Scriptum.Controllers
         // POST: Libros/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,FechaSubida,FechaRevision,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
 
         {
             if (ModelState.IsValid)
@@ -148,13 +150,14 @@ namespace Scriptum.Controllers
                     }
                 }
 
+                libro.FechaSubida = DateTime.Now; // Establecer la fecha de subida al momento de crear
                 _context.Add(libro);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Catalogo");
             }
             return View(libro);
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Libros/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -170,7 +173,7 @@ namespace Scriptum.Controllers
             }
             return View(libro);
         }
-
+        [Authorize(Roles = "Administrador")]
         // POST: Libros/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -289,7 +292,7 @@ namespace Scriptum.Controllers
         {
             return _context.Libros.Any(e => e.Id == id);
         }
-
+        [Authorize(Roles = "Administrador")]
         // GET: Libros/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -307,7 +310,7 @@ namespace Scriptum.Controllers
 
             return View(libro);
         }
-
+        [Authorize(Roles = "Administrador")]
         // POST: Libros/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
