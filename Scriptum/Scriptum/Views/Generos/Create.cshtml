@@ -5,7 +5,7 @@
 }
 
 <style>
-    /* Estilos generales */
+
     .page-header {
         background: #2C3E50;
         color: white;
@@ -26,7 +26,6 @@
         opacity: 0.9;
     }
 
-    /* Tarjeta del formulario */
     .form-card {
         background: white;
         border-radius: 1.5rem;
@@ -41,7 +40,6 @@
         transform: translateY(-5px);
     }
 
-    /* Títulos del formulario */
     .form-title {
         color: #1f2937;
         font-size: 1.8rem;
@@ -100,7 +98,6 @@
         cursor: not-allowed;
     }
 
-    /* Botón crear */
     .btn-create {
         background: #2C3E50;
         color: white;
@@ -125,7 +122,6 @@
         box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
     }
 
-    /* Botón volver */
     .btn-back {
         background: white;
         color: #2C3E50;
@@ -148,7 +144,6 @@
         box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
     }
 
-    /* Línea decorativa */
     hr {
         background: linear-gradient(90deg, transparent, #2C3E50, transparent);
         height: 2px;
@@ -157,7 +152,6 @@
         opacity: 0.2;
     }
 
-    /* Mensajes de validación */
     .text-danger {
         color: #ef4444;
         font-size: 0.875rem;
@@ -165,7 +159,6 @@
         display: block;
     }
 
-    /* Icono dentro del input */
     .input-icon-wrapper {
         position: relative;
     }
@@ -183,7 +176,6 @@
     }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -196,7 +188,6 @@
         <div class="col-md-6">
             <div class="form-card">
 
-                <!-- Título decorativo -->
                 <div class="form-title">
                     <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
@@ -229,7 +220,6 @@
                         </small>
                     </div>
 
-                    <!-- Nombre -->
                     <div class="form-group-custom">
                         <label asp-for="Nombre" class="form-label">
                             <i class="fas fa-tag"></i> Nombre del género

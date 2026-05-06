@@ -7,7 +7,7 @@
 }
 
 <style>
-    /* Estilos generales */
+
     .page-header {
         background: linear-gradient(135deg, #2C3E50 0%, #1a2b3a 100%);
         color: white;
@@ -28,7 +28,6 @@
             opacity: 0.9;
         }
 
-    /* Barra de búsqueda */
     .search-container {
         background: white;
         padding: 1.5rem;
@@ -92,7 +91,6 @@
             transform: translateY(-2px);
         }
 
-    /* Botón crear nuevo */
     .btn-create {
         background: #2C3E50;
         color: white;
@@ -115,7 +113,6 @@
             color: white;
         }
 
-    /* Botón volver al panel */
     .btn-back {
         background: #2C3E50;
         color: white;
@@ -138,7 +135,6 @@
             color: white;
         }
 
-    /* Contenedor de botones superiores */
     .top-buttons {
         display: flex;
         justify-content: space-between;
@@ -154,7 +150,6 @@
         flex-wrap: wrap;
     }
 
-    /* Contenedor de tabla con scroll horizontal */
     .table-responsive-custom {
         background: white;
         border-radius: 1rem;
@@ -165,11 +160,10 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Tabla */
     .custom-table {
         margin-bottom: 0;
         width: 100%;
-        min-width: 1800px; /* Forzar scroll horizontal para pantallas pequeñas */
+        min-width: 1800px; 
     }
 
         .custom-table thead {
@@ -200,7 +194,6 @@
             transition: background-color 0.3s ease;
         }
 
-    /* Badges */
     .badge-size {
         background: linear-gradient(135deg, #3b82f6, #2563eb);
         color: white;
@@ -222,7 +215,6 @@
         display: inline-block;
     }
 
-    /* Acciones */
     .action-links {
         display: flex;
         gap: 0.5rem;
@@ -265,13 +257,11 @@
                 color: #dc2626;
             }
 
-    /* Separador */
     .separator {
         color: #d1d5db;
         font-weight: 300;
     }
 
-    /* Paginación */
     .pagination-container {
         display: flex;
         justify-content: center;
@@ -308,7 +298,6 @@
             pointer-events: none;
         }
 
-    /* Botón volver en paginación */
     .btn-back-pagination {
         background: #2C3E50;
         color: white;
@@ -329,7 +318,6 @@
             color: white;
         }
 
-    /* Contador de resultados */
     .results-count {
         color: #6b7280;
         font-size: 0.9rem;
@@ -337,7 +325,6 @@
         text-align: center;
     }
 
-    /* Truncar texto largo */
     .truncate-text {
         max-width: 150px;
         overflow: hidden;
@@ -345,7 +332,6 @@
         white-space: nowrap;
     }
 
-    /* Truncar texto título */
     .truncate-text-titulo {
         max-width: 200px;
         overflow: hidden;
@@ -353,7 +339,6 @@
         white-space: nowrap;
     }
 
-    /* Miniatura de imagen */
     .image-thumb {
         width: 40px;
         height: 40px;
@@ -375,7 +360,6 @@
     }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -384,7 +368,7 @@
 </div>
 
 <div class="container">
-    <!-- Botones superiores: Nuevo Libro y Volver al panel -->
+
     <div class="top-buttons">
         <div class="left-buttons">
             <a asp-action="Create" class="btn-create">
@@ -402,7 +386,6 @@
         </div>
     </div>
 
-    <!-- Barra de búsqueda -->
     <div class="search-container">
         <form asp-action="Index" method="get">
             <div class="row g-3">
@@ -442,7 +425,6 @@
         </form>
     </div>
 
-    <!-- Tabla de libros -->
     <div class="table-responsive-custom">
         <table class="custom-table">
             <thead>
@@ -554,12 +536,10 @@
         </table>
     </div>
 
-    <!-- Contador de resultados -->
     <div class="results-count">
         Mostrando @Model.Count libros
     </div>
 
-    <!-- Paginación con botón Volver al panel -->
     @{
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";

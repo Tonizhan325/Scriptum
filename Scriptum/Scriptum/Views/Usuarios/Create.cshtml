@@ -5,7 +5,6 @@
 }
 
 <style>
-    /* Estilos generales */
     .page-header {
         background: #2C3E50;
         color: white;
@@ -26,7 +25,6 @@
             opacity: 0.9;
         }
 
-    /* Tarjeta del formulario */
     .form-card {
         background: white;
         border-radius: 1.5rem;
@@ -41,7 +39,6 @@
             transform: translateY(-5px);
         }
 
-    /* Títulos del formulario */
     .form-title {
         color: #1f2937;
         font-size: 1.8rem;
@@ -63,7 +60,6 @@
         border-bottom: 2px solid #f3f4f6;
     }
 
-    /* Grid del formulario */
     .form-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -106,7 +102,6 @@
             outline: none;
         }
 
-    /* Icono dentro del input */
     .input-icon-wrapper {
         position: relative;
     }
@@ -123,7 +118,6 @@
         padding-left: 2.5rem;
     }
 
-    /* Botón de crear */
     .btn-create {
         background: #2C3E50;
         color: white;
@@ -148,7 +142,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
         }
 
-    /* Botón volver */
     .btn-back {
         background: white;
         color: #2C3E50;
@@ -171,7 +164,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
         }
 
-    /* Línea decorativa */
     hr {
         background: linear-gradient(90deg, transparent, #2C3E50, transparent);
         height: 2px;
@@ -180,7 +172,6 @@
         opacity: 0.2;
     }
 
-    /* Mensajes de validación */
     .text-danger {
         color: #ef4444;
         font-size: 0.875rem;
@@ -188,7 +179,6 @@
         display: block;
     }
 
-    /* Tooltip de ayuda */
     .help-tooltip {
         color: #6b7280;
         font-size: 0.85rem;
@@ -203,7 +193,6 @@
             height: 14px;
         }
 
-    /* Badge de requisitos de contraseña */
     .password-requirements {
         background: #f9fafb;
         border-radius: 0.75rem;
@@ -248,7 +237,6 @@
         }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -261,7 +249,6 @@
         <div class="col-md-8 col-lg-6">
             <div class="form-card">
 
-                <!-- Título decorativo -->
                 <div class="form-title">
                     <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -274,7 +261,6 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
                     <div class="form-grid">
-                        <!-- Nombre -->
                         <div class="form-group-custom form-group-full">
                             <label asp-for="Nombre" class="form-label">
                                 <i class="fas fa-user"></i> Nombre completo
@@ -290,7 +276,6 @@
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
 
-                        <!-- Email -->
                         <div class="form-group-custom form-group-full">
                             <label asp-for="Email" class="form-label">
                                 <i class="fas fa-envelope"></i> Correo electrónico
@@ -306,8 +291,6 @@
                             </div>
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-
-                        <!-- Contraseña -->
                         <div class="form-group-custom form-group-full">
                             <label asp-for="Contraseña" class="form-label">
                                 <i class="fas fa-lock"></i> Contraseña
@@ -322,7 +305,6 @@
                             </div>
                             <span asp-validation-for="Contraseña" class="text-danger"></span>
 
-                            <!-- Requisitos de contraseña -->
                             <div class="password-requirements">
                                 <p>Requisitos de la contraseña:</p>
                                 <ul class="requirement-list">
@@ -348,7 +330,6 @@
                             </div>
                         </div>
 
-                        <!-- Fecha de registro -->
                         <div class="form-group-custom">
                             <label asp-for="fechaRegistro" class="form-label">
                                 <i class="fas fa-calendar-alt"></i> Fecha de registro
@@ -357,7 +338,6 @@
                             <span asp-validation-for="fechaRegistro" class="text-danger"></span>
                         </div>
 
-                        <!-- Estado -->
                         <div class="form-group-custom">
                             <label asp-for="Estado" class="form-label">
                                 <i class="fas fa-toggle-on"></i> Estado
@@ -371,7 +351,6 @@
                             <span asp-validation-for="Estado" class="text-danger"></span>
                         </div>
 
-                        <!-- Nota informativa -->
                         <div class="form-group-custom form-group-full">
                             <div class="help-tooltip">
                                 <svg fill="currentColor" viewBox="0 0 20 20">

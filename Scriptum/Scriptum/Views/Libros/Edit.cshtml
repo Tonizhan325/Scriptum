@@ -5,7 +5,7 @@
 }
 
 <style>
-    /* Estilos generales */
+
     .page-header {
         background: #2C3E50;
         color: white;
@@ -26,7 +26,6 @@
             opacity: 0.9;
         }
 
-    /* Tarjeta del formulario */
     .form-card {
         background: white;
         border-radius: 1.5rem;
@@ -41,7 +40,6 @@
             transform: translateY(-5px);
         }
 
-    /* Títulos del formulario */
     .form-title {
         color: #1f2937;
         font-size: 1.8rem;
@@ -63,7 +61,6 @@
         border-bottom: 2px solid #f3f4f6;
     }
 
-    /* Grid del formulario */
     .form-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -137,7 +134,6 @@
         resize: vertical;
     }
 
-    /* Icono dentro del input */
     .input-icon-wrapper {
         position: relative;
     }
@@ -154,7 +150,6 @@
         padding-left: 2.5rem;
     }
 
-    /* Botón guardar */
     .btn-save {
         background: #2C3E50;
         color: white;
@@ -179,7 +174,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
         }
 
-    /* Botón volver */
     .btn-back {
         background: white;
         color: #2C3E50;
@@ -202,7 +196,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
         }
 
-    /* Línea decorativa */
     hr {
         background: linear-gradient(90deg, transparent, #2C3E50, transparent);
         height: 2px;
@@ -211,7 +204,6 @@
         opacity: 0.2;
     }
 
-    /* Mensajes de validación */
     .text-danger {
         color: #ef4444;
         font-size: 0.875rem;
@@ -219,7 +211,6 @@
         display: block;
     }
 
-    /* Tooltip de ayuda */
     .help-tooltip {
         color: #6b7280;
         font-size: 0.85rem;
@@ -234,7 +225,6 @@
             height: 14px;
         }
 
-    /* Preview de imagen */
     .image-preview {
         margin-top: 1rem;
         padding: 1rem;
@@ -250,7 +240,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-    /* Badge de información */
     .info-badge {
         display: inline-block;
         background: #f3f4f6;
@@ -262,7 +251,6 @@
     }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -275,7 +263,6 @@
         <div class="col-md-10 col-lg-8">
             <div class="form-card">
 
-                <!-- Título decorativo -->
                 <div class="form-title">
                     <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
@@ -290,7 +277,7 @@
                     <input type="hidden" asp-for="FechaSubida" />
 
                     <div class="form-grid">
-                        <!-- Título -->
+
                         <div class="form-group-custom form-group-full">
                             <label asp-for="Titulo" class="form-label">
                                 <i class="fas fa-heading"></i> Título del libro
@@ -306,7 +293,6 @@
                             <span asp-validation-for="Titulo" class="text-danger"></span>
                         </div>
 
-                        <!-- Descripción -->
                         <div class="form-group-custom form-group-full">
                             <label asp-for="Descripcion" class="form-label">
                                 <i class="fas fa-align-left"></i> Descripción
@@ -315,7 +301,6 @@
                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                         </div>
 
-                        <!-- Idioma -->
                         <div class="form-group-custom">
                             <label asp-for="Idioma" class="form-label">
                                 <i class="fas fa-language"></i> Idioma
@@ -333,7 +318,7 @@
                             <span asp-validation-for="Idioma" class="text-danger"></span>
                         </div>
 
-                        <!-- Tamaño de archivo -->
+                        @*
                         <div class="form-group-custom">
                             <label asp-for="TamañoArchivo" class="form-label">
                                 <i class="fas fa-database"></i> Tamaño (bytes)
@@ -354,8 +339,8 @@
                                 <span>1 MB = 1048576 bytes</span>
                             </div>
                         </div>
+                        *@
 
-                        <!-- Fecha de revisión -->
                         <div class="form-group-custom">
                             <label asp-for="FechaRevision" class="form-label">
                                 <i class="fas fa-calendar-check"></i> Fecha de revisión
@@ -365,6 +350,7 @@
                         </div>
 
                         <!-- ID Usuario -->
+                        @*
                         <div class="form-group-custom">
                             <label asp-for="IdUsuario" class="form-label">
                                 <i class="fas fa-user"></i> ID Usuario
@@ -378,8 +364,8 @@
                                 <span>ID del usuario que creó el libro (no modificable)</span>
                             </div>
                         </div>
+                        *@
 
-                        <!-- ID Género -->
                         <div class="form-group-custom">
                             <label asp-for="IdGenero" class="form-label">
                                 <i class="fas fa-language"></i> Género
@@ -401,7 +387,6 @@
                             <span asp-validation-for="IdGenero" class="text-danger"></span>
                         </div>
 
-                        <!-- Nombre del autor -->
                         <div class="form-group-custom form-group-full">
                             <label asp-for="NombreAutor" class="form-label">
                                 <i class="fas fa-pen-fancy"></i> Nombre del autor
@@ -417,7 +402,6 @@
                             <span asp-validation-for="NombreAutor" class="text-danger"></span>
                         </div>
 
-                        <!-- Tipo de recurso -->
                         <div class="form-group-custom">
                             <label asp-for="Tipo" class="form-label">
                                 <i class="fas fa-language"></i> Tipo de recurso
@@ -430,20 +414,16 @@
                             <span asp-validation-for="Tipo" class="text-danger"></span>
                         </div>
 
-                        <!--URL archivo-->
                         <div class="form-group">
                             <label>Archivo PDF</label>
                             <input type="file" name="archivoPdf" accept="application/pdf" class="form-control" />
                         </div>
 
-                        <!-- Portada del libro -->
-                        <!-- Portada del libro - SECCIÓN CORREGIDA -->
                         <div class="form-group-custom form-group-full">
                             <label class="form-label">
                                 <i class="fas fa-image"></i> Portada del libro
                             </label>
 
-                            <!-- MOSTRAR IMAGEN ACTUAL -->
                             @if (!string.IsNullOrEmpty(Model.EnlaceImagen))
                             {
                                 <div class="current-image-container mb-3">
@@ -462,7 +442,6 @@
                                 <span>Deja vacío si no quieres cambiar la imagen actual</span>
                             </div>
 
-                            <!-- Preview de imagen -->
                             <div class="image-preview" id="imagePreview" style="display: none;">
                                 <p class="mb-1 mt-2"><strong>Nueva imagen:</strong></p>
                                 <img id="previewImg" src="#" alt="Vista previa" />
@@ -506,7 +485,7 @@
             const file = e.target.files[0];
 
             if (file) {
-                // Validar que sea una imagen
+                
                 if (!file.type.startsWith('image/')) {
                     alert('Por favor selecciona un archivo de imagen válido');
                     this.value = '';
@@ -514,7 +493,7 @@
                     return;
                 }
 
-                // Validar tamaño (5MB máximo)
+               
                 if (file.size > 5 * 1024 * 1024) {
                     alert('La imagen no debe superar los 5MB');
                     this.value = '';

@@ -5,7 +5,6 @@
 }
 
 <style>
-    /* Estilos generales */
     .page-header {
         background: #2C3E50;
         color: white;
@@ -26,7 +25,6 @@
             opacity: 0.9;
         }
 
-    /* Tarjeta del formulario */
     .form-card {
         background: white;
         border-radius: 1.5rem;
@@ -54,7 +52,6 @@
         border-bottom: 2px solid #f3f4f6;
     }
 
-    /* Grupos de formulario */
     .form-group-custom {
         margin-bottom: 1.5rem;
     }
@@ -87,7 +84,6 @@
             cursor: not-allowed;
         }
 
-    /* Botón guardar */
     .btn-save {
         background: #2C3E50;
         color: white;
@@ -116,7 +112,6 @@
             font-size: 1.1rem;
         }
 
-    /* Botón volver */
     .btn-back {
         background: white;
         color: #2C3E50;
@@ -139,7 +134,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
         }
 
-    /* Validaciones */
     .text-danger {
         color: #ef4444;
         font-size: 0.875rem;
@@ -147,13 +141,11 @@
         display: block;
     }
 
-    /* Contenedor del formulario */
     .form-container {
         max-width: 600px;
         margin: 0 auto;
     }
 
-    /* Línea decorativa */
     hr {
         background: linear-gradient(90deg, transparent, #2C3E50, transparent);
         height: 2px;
@@ -162,7 +154,6 @@
         opacity: 0.2;
     }
 
-    /* Icono decorativo */
     .user-icon {
         width: 60px;
         height: 60px;
@@ -180,7 +171,6 @@
             height: 30px;
         }
 
-    /* Campos deshabilitados */
     .field-hint {
         font-size: 0.85rem;
         color: #6b7280;
@@ -188,7 +178,6 @@
     }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -201,7 +190,6 @@
         <div class="col-md-8 col-lg-6">
             <div class="form-card">
 
-                <!-- Icono decorativo -->
                 <div class="user-icon">
                     <svg viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -219,13 +207,6 @@
                         <label asp-for="Nombre" class="form-label">Nombre completo</label>
                         <input asp-for="Nombre" class="form-control-custom" placeholder="Ej: Juan Pérez" />
                         <span asp-validation-for="Nombre" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group-custom">
-                        <label asp-for="Contraseña" class="form-label">Contraseña</label>
-                        <input asp-for="Contraseña" type="password" class="form-control-custom" placeholder="••••••••" />
-                        <span asp-validation-for="Contraseña" class="text-danger"></span>
-                        <small class="field-hint">Déjalo vacío si no quieres cambiarla</small>
                     </div>
 
                     <div class="form-group-custom">

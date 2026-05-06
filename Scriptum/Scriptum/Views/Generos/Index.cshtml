@@ -6,7 +6,7 @@
 }
 
 <style>
-    /* Estilos generales */
+
     .page-header {
         background: linear-gradient(135deg, #2C3E50 0%, #1a2b3a 100%);
         color: white;
@@ -27,7 +27,6 @@
         opacity: 0.9;
     }
     
-    /* Barra de búsqueda */
     .search-container {
         background: white;
         padding: 1.5rem;
@@ -90,7 +89,6 @@
         transform: translateY(-2px);
     }
     
-    /* Botón crear nuevo */
     .btn-create {
         background: #2C3E50;
         color: white;
@@ -113,7 +111,6 @@
         color: white;
     }
     
-    /* Botón volver */
     .btn-back {
         background: #2C3E50;
         color: white;
@@ -136,7 +133,6 @@
         color: white;
     }
     
-    /* Botón volver en paginación */
     .btn-back-pagination {
         background: #2C3E50;
         color: white;
@@ -157,7 +153,6 @@
         color: white;
     }
     
-    /* Contenedor de botones superiores */
     .top-buttons {
         display: flex;
         justify-content: space-between;
@@ -173,7 +168,6 @@
         flex-wrap: wrap;
     }
     
-    /* Contenedor de tabla */
     .table-container {
         background: white;
         border-radius: 1rem;
@@ -183,7 +177,6 @@
         margin-bottom: 2rem;
     }
     
-    /* Tabla */
     .custom-table {
         margin-bottom: 0;
         width: 100%;
@@ -215,7 +208,6 @@
         transition: background-color 0.3s ease;
     }
     
-    /* Badge para género */
     .badge-genre {
         background: #2C3E50;
         color: white;
@@ -227,7 +219,6 @@
         box-shadow: 0 2px 5px rgba(139, 92, 246, 0.3);
     }
     
-    /* Acciones */
     .action-links {
         display: flex;
         gap: 0.5rem;
@@ -272,13 +263,11 @@
         color: #dc2626;
     }
     
-    /* Separador */
     .separator {
         color: #d1d5db;
         font-weight: 300;
     }
-    
-    /* Paginación */
+
     .pagination-container {
         display: flex;
         justify-content: center;
@@ -315,7 +304,6 @@
         pointer-events: none;
     }
     
-    /* Contador de resultados */
     .results-count {
         color: #6b7280;
         font-size: 0.9rem;
@@ -323,7 +311,6 @@
         text-align: center;
     }
     
-    /* Contenedor vacío */
     .empty-state {
         text-align: center;
         padding: 3rem;
@@ -338,7 +325,6 @@
     }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -347,7 +333,7 @@
 </div>
 
 <div class="container">
-    <!-- Botones superiores: Nuevo Género y Volver -->
+
     <div class="top-buttons">
         <div class="left-buttons">
             <a asp-action="Create" class="btn-create">
@@ -365,7 +351,6 @@
         </div>
     </div>
 
-    <!-- Barra de búsqueda -->
     <div class="search-container">
         <form asp-action="Index" method="get">
             <div class="row g-3 align-items-end">
@@ -394,7 +379,6 @@
         </form>
     </div>
 
-    <!-- Tabla de géneros -->
     <div class="table-container">
         @if (Model.Any())
         {
@@ -462,13 +446,10 @@
         }
     </div>
 
-   
-        <!-- Contador de resultados -->
         <div class="results-count">
             Mostrando @Model.Count géneros
         </div>
 
-        <!-- Paginación con botón Volver -->
         @{
             var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
             var nextDisabled = !Model.HasNextPage ? "disabled" : "";

@@ -5,7 +5,7 @@
 }
 
 <style>
-    /* Estilos generales */
+
     .page-header {
         background: #2C3E50;
         color: white;
@@ -26,7 +26,6 @@
             opacity: 0.9;
         }
 
-    /* Tarjeta de confirmación */
     .delete-card {
         background: white;
         border-radius: 1.5rem;
@@ -42,7 +41,6 @@
             transform: translateY(-5px);
         }
 
-    /* Icono de advertencia */
     .warning-icon {
         width: 80px;
         height: 80px;
@@ -75,7 +73,6 @@
         border-bottom: 2px solid #f3f4f6;
     }
 
-    /* Información del género */
     .genre-info {
         background: #f9fafb;
         border-radius: 1rem;
@@ -94,7 +91,6 @@
         box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
     }
 
-    /* Botones */
     .action-buttons {
         display: flex;
         gap: 1rem;
@@ -147,7 +143,6 @@
         }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
@@ -160,7 +155,6 @@
         <div class="col-md-6">
             <div class="delete-card">
 
-                <!-- Icono de advertencia -->
                 <div class="warning-icon">
                     <svg fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -170,7 +164,6 @@
                 <h2 class="warning-title">¿Estás seguro?</h2>
                 <p class="warning-message">Esta acción no se puede deshacer. El género será eliminado permanentemente.</p>
 
-                <!-- Información del género -->
                 <div class="genre-info">
                     <span class="genre-badge">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="margin-right: 0.5rem; vertical-align: middle;">
@@ -180,7 +173,6 @@
                     </span>
                 </div>
 
-                <!-- Formulario de eliminación -->
                 <form asp-action="Delete">
                     <input type="hidden" asp-for="Id" />
 

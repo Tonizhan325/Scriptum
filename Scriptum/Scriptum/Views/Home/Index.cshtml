@@ -113,73 +113,14 @@
     }
     @if (User.IsInRole("Administrador"))
 {
-    <div class="admin-dashboard-container">
-        <!-- Header del Dashboard -->
-        <div class="admin-header">
-            <div class="admin-header-content">
-                <h1>Panel de Administración</h1>
-                <p>Gestión completa de la plataforma Scriptum</p>
-            </div>
-        </div>
-
-        <!-- Grid de tarjetas de administración -->
-        <div class="admin-grid">
-            <!-- Tarjeta Usuarios -->
-            <a href="~/Usuarios/Index" class="admin-card">
-                <div class="admin-card-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </div>
-                <div class="admin-card-content">
-                    <h3>Usuarios</h3>
-                    <p>Gestionar cuentas, roles y permisos</p>
-                    <span class="admin-card-action">Administrar →</span>
-                </div>
-            </a>
-
-            <!-- Tarjeta Libros -->
-            <a href="~/Libros/Index" class="admin-card">
-                <div class="admin-card-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                    </svg>
-                </div>
-                <div class="admin-card-content">
-                    <h3>Libros</h3>
-                    <p>Catálogo, stock y disponibilidad</p>
-                    <span class="admin-card-action">Administrar →</span>
-                </div>
-            </a>
-
-            <!-- Tarjeta Géneros -->
-            <a href="~/Generos/Index" class="admin-card">
-                <div class="admin-card-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                    </svg>
-                </div>
-                <div class="admin-card-content">
-                    <h3>Géneros</h3>
-                    <p>Clasificación y categorías literarias</p>
-                    <span class="admin-card-action">Administrar →</span>
-                </div>
-            </a>
-        </div>
-    </div>
-
     <style>
-        /* Dashboard Administrador - Estilo Profesional */
+
         .admin-dashboard-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
         }
 
-        /* Header */
         .admin-header {
             margin-bottom: 3rem;
             position: relative;
@@ -206,7 +147,6 @@
             font-weight: 500;
         }
 
-        /* Grid responsivo */
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -214,7 +154,6 @@
             margin-top: 1rem;
         }
 
-        /* Tarjeta moderna */
         .admin-card {
             background: white;
             border-radius: 1.5rem;
@@ -236,7 +175,6 @@
             background: linear-gradient(135deg, #ffffff 0%, #fafcff 100%);
         }
 
-        /* Ícono de la tarjeta */
         .admin-card-icon {
             width: 70px;
             height: 70px;
@@ -260,7 +198,6 @@
             background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
         }
 
-        /* Contenido textual */
         .admin-card-content {
             flex: 1;
         }
@@ -295,7 +232,6 @@
             transform: translateX(4px);
         }
 
-        /* Responsive para móviles */
         @@media (max-width: 768px) {
             .admin-dashboard-container {
                 padding: 1rem;
@@ -329,7 +265,6 @@
             }
         }
 
-        /* Pequeña animación de entrada */
         .admin-card {
             animation: fadeInUp 0.4s ease-out backwards;
         }
@@ -348,7 +283,63 @@
                 transform: translateY(0);
             }
         }
-    </style>
+        </style>
+    <div class="admin-dashboard-container">
+
+        <div class="admin-header">
+            <div class="admin-header-content">
+                <h1>Panel de Administración</h1>
+                <p>Gestión completa de la plataforma Scriptum</p>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+
+            <a href="~/Usuarios/Index" class="admin-card">
+                <div class="admin-card-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="admin-card-content">
+                    <h3>Usuarios</h3>
+                    <p>Gestionar cuentas, roles y permisos</p>
+                    <span class="admin-card-action">Administrar →</span>
+                </div>
+            </a>
+
+            <a href="~/Libros/Index" class="admin-card">
+                <div class="admin-card-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                </div>
+                <div class="admin-card-content">
+                    <h3>Libros</h3>
+                    <p>Catálogo, stock y disponibilidad</p>
+                    <span class="admin-card-action">Administrar →</span>
+                </div>
+            </a>
+
+            <a href="~/Generos/Index" class="admin-card">
+                <div class="admin-card-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                </div>
+                <div class="admin-card-content">
+                    <h3>Géneros</h3>
+                    <p>Clasificación y categorías literarias</p>
+                    <span class="admin-card-action">Administrar →</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    
 }
 }
 else
