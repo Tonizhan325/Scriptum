@@ -219,7 +219,6 @@
         display: flex;
         gap: 0.5rem;
         justify-content: flex-start;
-        white-space: nowrap;
     }
 
     .action-link {
@@ -227,36 +226,16 @@
         transition: all 0.3s ease;
         text-decoration: none;
         font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
     }
 
-        .action-link:hover {
-            transform: translateY(-2px);
-            color: #1a2b3a;
-        }
-
-        .action-link.edit {
-            color: #10b981;
-        }
-
-            .action-link.edit:hover {
-                color: #059669;
-            }
-
-        .action-link.details {
-            color: #3b82f6;
-        }
-
-            .action-link.details:hover {
-                color: #2563eb;
-            }
-
-        .action-link.delete {
-            color: #ef4444;
-        }
-
-            .action-link.delete:hover {
-                color: #dc2626;
-            }
+    .action-link:hover {
+        transform: translateY(-2px);
+        color: #1a2b3a; 
+        text-decoration: none;
+    }
 
     .separator {
         color: #d1d5db;

@@ -6,7 +6,7 @@
 }
 
 <style>
-    /* Estilos generales */
+    
     .page-header {
         background: #2C3E50;
         color: white;
@@ -27,7 +27,6 @@
             opacity: 0.9;
         }
 
-    /* Tarjeta del formulario */
     .form-card {
         background: white;
         border-radius: 1.5rem;
@@ -95,7 +94,6 @@
             cursor: not-allowed;
         }
 
-    /* Botón actualizar */
     .btn-update {
         background: #2C3E50;
         color: white;
@@ -120,7 +118,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
         }
 
-    /* Botón de verificación */
     .btn-verify {
         background: transparent;
         color: #2C3E50;
@@ -143,7 +140,6 @@
             box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
         }
 
-    /* Grupo de input con icono */
     .input-group-custom {
         position: relative;
     }
@@ -160,7 +156,6 @@
         padding-left: 2.5rem;
     }
 
-    /* Badge de verificación */
     .verified-badge {
         display: inline-flex;
         align-items: center;
@@ -197,7 +192,6 @@
             height: 18px;
         }
 
-    /* Línea decorativa */
     hr {
         background: linear-gradient(90deg, transparent, #2C3E50, transparent);
         height: 2px;
@@ -206,7 +200,6 @@
         opacity: 0.2;
     }
 
-    /* Mensajes de validación */
     .text-danger {
         color: #ef4444;
         font-size: 0.875rem;
@@ -214,7 +207,6 @@
         display: block;
     }
 
-    /* Status message */
     .status-message {
         background: #f3f4f6;
         border-left: 4px solid #2C3E50;
@@ -224,7 +216,6 @@
         color: #4b5563;
     }
 
-    /* Email actual */
     .current-email {
         background: #f9fafb;
         border-radius: 0.75rem;
@@ -250,7 +241,6 @@
     }
 </style>
 
-<!-- Header -->
 <div class="page-header">
     <div class="container">
         <h3>@ViewData["Title"]</h3>
@@ -263,7 +253,6 @@
         <div class="col-md-8 col-lg-6">
             <div class="form-card">
 
-                <!-- Título decorativo -->
                 <div class="form-title">
                     <svg width="28" height="28" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
@@ -274,7 +263,6 @@
 
                 <partial name="_StatusMessage" for="StatusMessage" />
 
-                <!-- Email actual y estado de verificación -->
                 <div class="current-email">
                     <div class="current-email-label">Email actual</div>
                     <div class="current-email-value">
@@ -314,7 +302,6 @@
                         </button>
                     }
 
-                    <!-- Nuevo email -->
                     <div class="form-group-custom">
                         <label asp-for="Input.NewEmail" class="form-label">
                             <i class="fas fa-envelope"></i> Nuevo correo electrónico
