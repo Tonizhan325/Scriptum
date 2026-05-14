@@ -54,17 +54,15 @@
                 animation: slideDown 0.3s ease;
             }
 
-
         @@keyframes slideDown {
-            from{
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .dropdown-item {
@@ -107,11 +105,71 @@
                 box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
                 outline: none;
             }
+
+        .footer-scriptum {
+            background: linear-gradient(135deg, #2C3E50 0%, #1a252f 100%);
+            color: #e5e7eb;
+            padding: 1.5rem 0 1rem 0;
+            margin-top: auto;
+        }
+
+        .footer-scriptum a {
+            color: #e5e7eb;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-scriptum a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .footer-scriptum .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-scriptum .footer-brand img {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-scriptum .footer-brand div div {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .footer-scriptum .footer-brand small {
+            font-size: 0.65rem;
+            opacity: 0.7;
+        }
+
+        .footer-scriptum .footer-links {
+            font-size: 0.9rem;
+        }
+
+        .footer-scriptum .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        @@media (max-width: 768px) {
+            .footer-scriptum .footer-brand {
+                justify-content: center;
+            }
+            
+            .footer-scriptum .footer-links {
+                text-align: center;
+            }
+        }
     </style>
-
-   
-
-
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -119,7 +177,6 @@
         <nav class="navbar navbar-expand-lg navbar-scriptum">
             <div class="container-fluid">
 
-                <!-- LOGO -->
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                     <img src="~/img/logoScriptum.png" alt="Scriptum" />
                     <div>
@@ -128,14 +185,12 @@
                     </div>
                 </a>
 
-                <!-- TOGGLER -->
                 <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarMain">
 
-                    <!-- LINKS CENTRALES -->
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -177,8 +232,6 @@
                     </ul>
 
                     <div class="d-flex align-items-center">
-                        
-
                         <partial name="_LoginPartial" />
 
                         <div class="avatar-dropdown">
@@ -215,18 +268,38 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted mt-auto">
+    <footer class="footer-scriptum">
         <div class="container">
-            &copy; 2026 - Scriptum - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <div class="footer-brand">
+                        <div>
+                            <div>SCRIPTUM</div>
+                            <small>Biblioteca digital colaborativa</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-links">
+                        <a href="~/Home/Privacy">Política de privacidad</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                &copy; 2026 - Scriptum - Todos los derechos reservados
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const avatarBtn = document.getElementById('avatarBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -237,7 +310,6 @@
                 });
             }
 
-            // Cerrar el menú al hacer clic fuera
             window.addEventListener('click', function(event) {
                 const avatarDropdown = document.getElementById('avatarDropdown');
                 if (!avatarDropdown.contains(event.target)) {
