@@ -6,23 +6,23 @@
 <style>
     aside {
         position: fixed;
-        right: -200px; /* Escondido por defecto (ajusta según el ancho) */
+        right: -200px; 
         top: 25%;
         width: 200px;
         background: #2C3E50;
-        transition: right 0.3s ease; /* Animación suave */
+        transition: right 0.3s ease;
         z-index: 1000;
         padding: 2rem;
         border-radius: 0 0 0 10px;
     }
 
         aside.active {
-            right: 0; /* Se muestra */
+            right: 0;
         }
 
     #btn-toggle-filter {
         position: absolute;
-        left: -60px; /* Botón pegado al borde del panel */
+        left: -60px; 
         top: 0px;
         background: #2C3E50;
         color: white;
@@ -38,7 +38,6 @@
     }
 </style>
 
-<!--Esto de abajo habrá que cambiarlo por un grid seguramente para evitar problemas de ancho de contenido-->
 <aside id="filtro-sidebar">
     <button id="btn-toggle-filter" title="Filtrar" style="font-size:36px;">
         🔍
@@ -61,7 +60,6 @@
 
 <h1>Catálogo</h1>
 
-<!--Esto es pura apariencia, hay que cambiarlo-->
 @{
     string generoSelec = Utils.SelectSearchFilters(Model.GeneroSeleccionado);
     string tipoRecurso = Utils.SelectType(Model.TipoSeleccionado);
@@ -114,11 +112,10 @@
                 <p>@libro.Descripcion</p>
                 <small>Género: @libro.IdGenero | @libro.FechaSubida.ToShortDateString()</small>
             </div>
-            <!--Botón para descarga-->
             @if (!string.IsNullOrEmpty(@libro.URL))
             {
-                <a href="@libro.URL" target="_blank" class="btn btn-success" style="max-height:40px; margin-top:auto; margin-left:auto; min-width:10%">
-                    📥 PDF
+                <a href="@libro.URL" target="_blank" class="btn" style="max-height:40px; margin-top:auto; margin-left:auto; min-width:10%; background-color: #2C3E50; color: white; border: none;">
+                    Descargar 
                 </a>
             }
         </article>

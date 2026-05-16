@@ -203,16 +203,22 @@
                                     <a class="nav-link" href="~/Catalogo/Index">Catálogo</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Compartir libro</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="#">Contacto</a>
                                 </li>
                             }
                             @if (User.IsInRole("Administrador"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link">Panel del administrador</a>
+                                    <a class="nav-link" href="~/Home/Index">Inicio</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="~/Catalogo/Index">Catálogo</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="~/Administracion/Index">Panel del administrador</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Contacto</a>
                                 </li>
                             }
                         }
@@ -234,7 +240,7 @@
                     <div class="d-flex align-items-center">
                         <partial name="_LoginPartial" />
 
-                        <div class="avatar-dropdown">
+                        <div class="avatar-dropdown" id="avatarDropdown">
                             <div class="avatar" id="avatarBtn">
                                 👤
                             </div>
@@ -246,14 +252,18 @@
                                     </svg>
                                     Configuración
                                 </a>
-                                <a href="/Libros/Create" class="dropdown-item">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                                        <line x1="12" y1="7" x2="12" y2="7"></line>
-                                    </svg>
-                                    Subir libros
-                                </a>
+                                
+                                @if (User.Identity.IsAuthenticated && (User.IsInRole("Usuario") || User.IsInRole("Administrador")))
+                                {
+                                    <a href="/Libros/Create" class="dropdown-item">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                            <line x1="12" y1="7" x2="12" y2="7"></line>
+                                        </svg>
+                                        Subir libros
+                                    </a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -302,8 +312,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             const avatarBtn = document.getElementById('avatarBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
+            const avatarDropdown = document.getElementById('avatarDropdown');
 
-            if (avatarBtn) {
+            if (avatarBtn && dropdownMenu) {
                 avatarBtn.addEventListener('click', function(event) {
                     event.stopPropagation();
                     dropdownMenu.classList.toggle('show');
@@ -311,8 +322,7 @@
             }
 
             window.addEventListener('click', function(event) {
-                const avatarDropdown = document.getElementById('avatarDropdown');
-                if (!avatarDropdown.contains(event.target)) {
+                if (avatarDropdown && !avatarDropdown.contains(event.target)) {
                     if (dropdownMenu) {
                         dropdownMenu.classList.remove('show');
                     }
