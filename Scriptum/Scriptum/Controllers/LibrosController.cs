@@ -93,20 +93,15 @@ namespace Scriptum.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
         {
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
-                if (string.IsNullOrEmpty(userId))
-                {
-                    ModelState.AddModelError("", "Usuario no autenticado");
-                    return View(libro);
-                }
+                // ================================================
+                // SOLO TAMAÑO AUTOMÁTICO - SIN USUARIO AUTOMÁTICO
+                // ================================================
 
-                libro.IdUsuario = int.Parse(userId);
-
+                // Subir imagen a Cloudinary (opcional)
                 if (imagenArchivo != null && imagenArchivo.Length > 0)
                 {
                     var uploadParams = new ImageUploadParams()
@@ -119,6 +114,7 @@ namespace Scriptum.Controllers
                     libro.EnlaceImagen = uploadResult.SecureUrl.ToString();
                 }
 
+                // Procesar el PDF
                 if (archivoPdf != null && archivoPdf.Length > 0)
                 {
                     // Validar tipo de archivo
@@ -135,8 +131,13 @@ namespace Scriptum.Controllers
                         return View(libro);
                     }
 
+                    // ============================================
+                    // ASIGNAR TAMAÑO DEL ARCHIVO AUTOMÁTICAMENTE
+                    // El tamaño se guarda en MB con 2 decimales
+                    // ============================================
                     libro.TamañoArchivo = Math.Round((decimal)archivoPdf.Length / (1024 * 1024), 2);
 
+                    // Subir PDF a Cloudinary
                     var uploadParamsPdf = new RawUploadParams()
                     {
                         File = new FileDescription(archivoPdf.FileName, archivoPdf.OpenReadStream()),
@@ -162,6 +163,7 @@ namespace Scriptum.Controllers
                     return View(libro);
                 }
 
+                // Asignar fecha de subida
                 libro.FechaSubida = DateTime.Now;
 
                 // Guardar en la base de datos
