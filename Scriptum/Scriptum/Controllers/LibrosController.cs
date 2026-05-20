@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Scriptum.Data;
 using Scriptum.Models;
+using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,42 +94,48 @@ namespace Scriptum.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Titulo,Descripcion,Idioma,TamañoArchivo,URL,Estado,IdUsuario,IdGenero,NombreAutor,Tipo,EnlaceImagen")] Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
-
         {
             if (ModelState.IsValid)
             {
-                // Verificar si el usuario subió una imagen
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                
+                if (string.IsNullOrEmpty(userId))
+                {
+                    ModelState.AddModelError("", "Usuario no autenticado");
+                    return View(libro);
+                }
+
+                libro.IdUsuario = int.Parse(userId);
+
                 if (imagenArchivo != null && imagenArchivo.Length > 0)
                 {
-                    // Configurar la subida a Cloudinary
                     var uploadParams = new ImageUploadParams()
                     {
                         File = new FileDescription(imagenArchivo.FileName, imagenArchivo.OpenReadStream()),
-                        AssetFolder = "portadas_libros" // Carpeta opcional en Cloudinary
+                        AssetFolder = "portadas_libros"
                     };
 
-                    // Ejecutar la subida
                     var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-
-                    // Guardar la URL resultante en el objeto libro
                     libro.EnlaceImagen = uploadResult.SecureUrl.ToString();
                 }
 
                 if (archivoPdf != null && archivoPdf.Length > 0)
                 {
-                    // Validar tipo
+                    // Validar tipo de archivo
                     if (!archivoPdf.ContentType.Contains("pdf"))
                     {
                         ModelState.AddModelError("", "Solo se permiten archivos PDF");
                         return View(libro);
                     }
 
-                    // Validar tamaño (10MB)
+                    // Validar tamaño máximo (50MB)
                     if (archivoPdf.Length > 50 * 1024 * 1024)
                     {
-                        ModelState.AddModelError("", "El PDF es demasiado grande");
+                        ModelState.AddModelError("", "El PDF es demasiado grande. Tamaño máximo: 50MB");
                         return View(libro);
                     }
+
+                    libro.TamañoArchivo = Math.Round((decimal)archivoPdf.Length / (1024 * 1024), 2);
 
                     var uploadParamsPdf = new RawUploadParams()
                     {
@@ -149,10 +156,18 @@ namespace Scriptum.Controllers
                         return View(libro);
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Debe subir un archivo PDF");
+                    return View(libro);
+                }
 
-                libro.FechaSubida = DateTime.Now; // Establecer la fecha de subida al momento de crear
+                libro.FechaSubida = DateTime.Now;
+
+                // Guardar en la base de datos
                 _context.Add(libro);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index", "Catalogo");
             }
             return View(libro);
@@ -199,7 +214,7 @@ namespace Scriptum.Controllers
             libroEnBd.Idioma = libro.Idioma;
             libroEnBd.TamañoArchivo = libro.TamañoArchivo;
             libroEnBd.URL = libro.URL;
-            libroEnBd.FechaRevision = libro.FechaRevision;
+            libroEnBd.FechaRevision = DateTime.Now;
             libroEnBd.NombreAutor = libro.NombreAutor;
             libroEnBd.IdGenero = libro.IdGenero;
             libroEnBd.Tipo = libro.Tipo;
