@@ -32,10 +32,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-// Configuración de los servicios de ASP.NET Core Identity
+// Configuraciï¿½n de los servicios de ASP.NET Core Identity
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Password settings. Configuración de las características de las contraseñas
+    // Password settings. Configuraciï¿½n de las caracterï¿½sticas de las contraseï¿½as
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     //options.Password.RequireNonAlphanumeric = true;
