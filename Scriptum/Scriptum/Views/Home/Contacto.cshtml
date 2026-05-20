@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Contacto";
+}
+
+<style>
+    /* Estilos Generales */
+    body {
+        background-color: #f4f6f9;
+        color: #333;
+    }
+
+    /* Contenedor Principal Centrado */
+    .contact-container {
+        max-width: 600px;
+        margin: 80px auto;
+        padding: 20px;
+    }
+
+    /* Tarjeta de Información */
+    .contact-card {
+        background: #fff;
+        padding: 45px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .contact-card h2 {
+            color: #121f2d;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-card p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            font-size: 1rem;
+        }
+
+    /* Bloques de Detalles */
+    .info-details {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+    }
+
+    .info-item {
+        font-size: 1.05rem;
+    }
+
+        .info-item strong {
+            color: #121f2d;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+            .info-item a:hover {
+                color: #121f2d;
+            }
+
+        .info-item span {
+            color: #334155;
+            font-weight: 600;
+        }
+
+    /* Adaptabilidad para Móviles */
+    @@media (max-width: 480px) {
+        .contact-container
+
+    {
+        margin: 40px auto;
+        padding: 15px;
+    }
+
+    .contact-card {
+        padding: 30px 20px;
+    }
+
+    }
+</style>
+
+<main class="contact-container">
+
+    <section class="contact-card">
+        <h2>¿Tienes dudas?</h2>
+        <p>Si tienes problemas para subir material, reportar un error en la plataforma o quieres colaborar de forma directa con la biblioteca, estamos aquí para ayudarte.</p>
+
+        <div class="info-details">
+            <div class="info-item">
+                <strong>Soporte General</strong>
+                <a href="mailto:soporte@scriptum.com">soporte@scriptum.com</a>
+            </div>
+
+            <div class="info-item">
+                <strong>Comunidad</strong>
+                <span>@@scriptum_proyecto</span>
+            </div>
+        </div>
+    </section>
+
+</main>
