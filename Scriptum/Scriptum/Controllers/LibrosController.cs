@@ -52,10 +52,8 @@ namespace Scriptum.Controllers
                 libros = libros.Where(s => s.NombreAutor.Contains(strCadenaAutor));
             }
 
-            // ORDENAR SIEMPRE por FechaSubida de forma descendente
             libros = libros.OrderByDescending(s => s.FechaSubida);
 
-            // Crear la lista paginada
             return View(await PaginatedList<Libro>.CreateAsync(
                 libros.AsNoTracking(),
                 pageNumber ?? 1,
@@ -98,7 +96,6 @@ namespace Scriptum.Controllers
             if (ModelState.IsValid)
             {
 
-                // Subir imagen a Cloudinary (opcional)
                 if (imagenArchivo != null && imagenArchivo.Length > 0)
                 {
                     var uploadParams = new ImageUploadParams()
@@ -111,17 +108,15 @@ namespace Scriptum.Controllers
                     libro.EnlaceImagen = uploadResult.SecureUrl.ToString();
                 }
 
-                // Procesar el PDF
                 if (archivoPdf != null && archivoPdf.Length > 0)
                 {
-                    // Validar tipo de archivo
+
                     if (!archivoPdf.ContentType.Contains("pdf"))
                     {
                         ModelState.AddModelError("", "Solo se permiten archivos PDF");
                         return View(libro);
                     }
 
-                    // Validar tamaño máximo (50MB)
                     if (archivoPdf.Length > 50 * 1024 * 1024)
                     {
                         ModelState.AddModelError("", "El PDF es demasiado grande. Tamaño máximo: 50MB");
@@ -130,7 +125,6 @@ namespace Scriptum.Controllers
 
                     libro.TamañoArchivo = Math.Round((decimal)archivoPdf.Length / (1024 * 1024), 2);
 
-                    // Subir PDF a Cloudinary
                     var uploadParamsPdf = new RawUploadParams()
                     {
                         File = new FileDescription(archivoPdf.FileName, archivoPdf.OpenReadStream()),
@@ -187,115 +181,131 @@ namespace Scriptum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Libro libro, IFormFile? imagenArchivo, IFormFile? archivoPdf)
+        public async Task<IActionResult> Edit(int id, Libro libro, IFormFile imagenArchivo, IFormFile archivoPdf)
         {
             if (id != libro.Id)
             {
                 return NotFound();
             }
 
-            // Buscar el libro existente
-            var libroEnBd = await _context.Libros.FindAsync(id);
-            if (libroEnBd == null)
+            var libroExistente = await _context.Libros.FindAsync(id);
+            if (libroExistente == null)
             {
                 return NotFound();
             }
 
-            // Actualizar propiedades
-            libroEnBd.Titulo = libro.Titulo;
-            libroEnBd.Descripcion = libro.Descripcion;
-            libroEnBd.Idioma = libro.Idioma;
-            libroEnBd.TamañoArchivo = libro.TamañoArchivo;
-            libroEnBd.URL = libro.URL;
-            libroEnBd.FechaRevision = DateTime.Now;
-            libroEnBd.NombreAutor = libro.NombreAutor;
-            libroEnBd.IdGenero = libro.IdGenero;
-            libroEnBd.Tipo = libro.Tipo;
+            ModelState.Remove("imagenArchivo");
+            ModelState.Remove("archivoPdf");
+            ModelState.Remove("EnlaceImagen");
+            ModelState.Remove("URL");
+            ModelState.Remove("TamañoArchivo");
 
-            // PROCESAR IMAGEN: subir a Cloudinary y guardar la URL segura
-            if (imagenArchivo != null && imagenArchivo.Length > 0)
+            if (imagenArchivo == null || imagenArchivo.Length == 0)
+            {
+                libro.EnlaceImagen = libroExistente.EnlaceImagen;
+            }
+
+            if (archivoPdf == null || archivoPdf.Length == 0)
+            {
+                libro.URL = libroExistente.URL;
+                libro.TamañoArchivo = libroExistente.TamañoArchivo;
+            }
+
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    // (Opcional) validar extensión y tamaño
-                    var extension = Path.GetExtension(imagenArchivo.FileName).ToLower();
-                    var allowed = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                    if (!allowed.Contains(extension))
+
+                    libroExistente.Titulo = libro.Titulo;
+                    libroExistente.Descripcion = libro.Descripcion;
+                    libroExistente.Idioma = libro.Idioma;
+                    libroExistente.IdGenero = libro.IdGenero;
+                    libroExistente.NombreAutor = libro.NombreAutor;
+                    libroExistente.Tipo = libro.Tipo;
+                    libroExistente.FechaRevision = libro.FechaRevision;
+
+                    if (archivoPdf != null && archivoPdf.Length > 0)
                     {
-                        ModelState.AddModelError("", "Formato de imagen no permitido. Utiliza JPG, PNG o GIF.");
-                        return View(libroEnBd);
+
+                        if (!archivoPdf.ContentType.Contains("pdf"))
+                        {
+                            ModelState.AddModelError("", "Solo se permiten archivos PDF");
+                            return View(libro);
+                        }
+
+                        if (archivoPdf.Length > 50 * 1024 * 1024)
+                        {
+                            ModelState.AddModelError("", "El PDF es demasiado grande. Tamaño máximo: 50MB");
+                            return View(libro);
+                        }
+
+                        libroExistente.TamañoArchivo = Math.Round((decimal)archivoPdf.Length / (1024 * 1024), 2);
+
+                        var uploadParamsPdf = new RawUploadParams()
+                        {
+                            File = new FileDescription(archivoPdf.FileName, archivoPdf.OpenReadStream()),
+                            Folder = "libros_pdf",
+                            Type = "upload"
+                        };
+
+                        var uploadResultPdf = await _cloudinary.UploadAsync(uploadParamsPdf);
+
+                        if (uploadResultPdf?.SecureUrl != null)
+                        {
+                            libroExistente.URL = uploadResultPdf.SecureUrl.ToString();
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Error subiendo el PDF a Cloudinary");
+                            return View(libro);
+                        }
                     }
 
-                    var uploadParams = new ImageUploadParams()
+                    if (imagenArchivo != null && imagenArchivo.Length > 0)
                     {
-                        File = new FileDescription(imagenArchivo.FileName, imagenArchivo.OpenReadStream()),
-                        AssetFolder = "portadas_libros"
-                    };
 
-                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                        if (!imagenArchivo.ContentType.StartsWith("image/"))
+                        {
+                            ModelState.AddModelError("", "Solo se permiten archivos de imagen");
+                            return View(libro);
+                        }
 
-                    if (uploadResult != null && !string.IsNullOrEmpty(uploadResult.SecureUrl?.ToString()))
+                        if (imagenArchivo.Length > 5 * 1024 * 1024)
+                        {
+                            ModelState.AddModelError("", "La imagen es demasiado grande. Tamaño máximo: 5MB");
+                            return View(libro);
+                        }
+
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(imagenArchivo.FileName, imagenArchivo.OpenReadStream()),
+                            AssetFolder = "portadas_libros"
+                        };
+
+                        var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                        libroExistente.EnlaceImagen = uploadResult.SecureUrl.ToString();
+                    }
+
+                    _context.Update(libroExistente);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LibroExists(libro.Id))
                     {
-                        // Guardar la URL remota (no se sobrescribe con nombre local)
-                        libroEnBd.EnlaceImagen = uploadResult.SecureUrl.ToString();
-                        // Si quieres gestionar/eliminar la imagen en Cloudinary más tarde,
-                        // considera guardar uploadResult.PublicId en una nueva columna.
+                        return NotFound();
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Error al subir la imagen a Cloudinary.");
-                        return View(libroEnBd);
+                        throw;
                     }
                 }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", $"Error al guardar la imagen: {ex.Message}");
-                    return View(libroEnBd);
-                }
             }
-
-            if (archivoPdf != null && archivoPdf.Length > 0)
-            {
-                if (!archivoPdf.ContentType.Contains("pdf"))
-                {
-                    ModelState.AddModelError("", "Solo se permiten PDFs");
-                    return View(libroEnBd);
-                }
-
-                if (archivoPdf.Length > 50 * 1024 * 1024)
-                {
-                    ModelState.AddModelError("", "El PDF es demasiado grande");
-                    return View(libroEnBd);
-                }
-
-                var uploadParamsPdf = new RawUploadParams()
-                {
-                    File = new FileDescription(archivoPdf.FileName, archivoPdf.OpenReadStream()),
-                    Folder = "libros_pdf",
-                    Type = "upload"
-                };
-
-                var uploadResultPdf = await _cloudinary.UploadAsync(uploadParamsPdf);
-
-                if (uploadResultPdf != null && !string.IsNullOrEmpty(uploadResultPdf.SecureUrl?.ToString()))
-                {
-                    libroEnBd.URL = uploadResultPdf.SecureUrl.ToString();
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Error subiendo el PDF");
-                    return View(libroEnBd);
-                }
-            }
-
-            // Guardar cambios en BD
-            await _context.SaveChangesAsync();
-
-            TempData["Success"] = "Libro actualizado correctamente";
-            return RedirectToAction(nameof(Index));
+            return View(libro);
         }
 
-        // Método helper para verificar si el libro existe
         private bool LibroExists(int id)
         {
             return _context.Libros.Any(e => e.Id == id);

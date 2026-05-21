@@ -460,20 +460,20 @@
                         </td>
                         <td>
                             @{
-                                var tamaño = item.TamañoArchivo;
+                                var tamañoEnMB = item.TamañoArchivo; 
                                 string tamañoFormateado;
 
-                                if (tamaño >= 1048576)
+                                if (tamañoEnMB >= 1024) 
                                 {
-                                    tamañoFormateado = $"{Math.Round(tamaño / 1048576m, 2)} MB";
+                                    tamañoFormateado = $"{Math.Round(tamañoEnMB / 1024m, 2)} GB";
                                 }
-                                else if (tamaño >= 1024)
+                                else if (tamañoEnMB > 0)
                                 {
-                                    tamañoFormateado = $"{Math.Round(tamaño / 1024m, 2)} KB";
+                                    tamañoFormateado = $"{Math.Round(tamañoEnMB, 2)} MB";
                                 }
                                 else
                                 {
-                                    tamañoFormateado = $"{tamaño} B";
+                                    tamañoFormateado = "--";
                                 }
                             }
 

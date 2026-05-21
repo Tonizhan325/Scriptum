@@ -258,29 +258,12 @@
                         <div class="info-row">
                             <div class="info-label">Tamaño</div>
                             <div class="info-value">
-                                    @{
-                                        decimal? tamañoDecimal = Model.TamañoArchivo;
-                                        string tamañoFormateado = "0 B";
-
-                                        if (tamañoDecimal.HasValue)
-                                        {
-                                            double tamaño = (double)tamañoDecimal.Value;
-
-                                            if (tamaño >= 1048576)
-                                            {
-                                                tamañoFormateado = $"{tamaño / 1048576.0:F1} MB";
-                                            }
-                                            else if (tamaño >= 1024)
-                                            {
-                                                tamañoFormateado = $"{tamaño / 1024.0:F1} KB";
-                                            }
-                                            else
-                                            {
-                                                tamañoFormateado = $"{tamaño:F0} B";
-                                            }
-                                        }
-                                    }
-                                    <span class="file-size">@tamañoFormateado</span>
+                                @{
+                                    string tamañoFormateado = Model.TamañoArchivo > 0 
+                                        ? $"{Model.TamañoArchivo:F2} MB" 
+                                        : "--";
+                                }
+                                <span class="file-size">@tamañoFormateado</span>
                             </div>
                         </div>
                     </div>
