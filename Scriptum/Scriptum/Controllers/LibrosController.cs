@@ -97,9 +97,6 @@ namespace Scriptum.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ================================================
-                // SOLO TAMAÑO AUTOMÁTICO - SIN USUARIO AUTOMÁTICO
-                // ================================================
 
                 // Subir imagen a Cloudinary (opcional)
                 if (imagenArchivo != null && imagenArchivo.Length > 0)
@@ -131,10 +128,6 @@ namespace Scriptum.Controllers
                         return View(libro);
                     }
 
-                    // ============================================
-                    // ASIGNAR TAMAÑO DEL ARCHIVO AUTOMÁTICAMENTE
-                    // El tamaño se guarda en MB con 2 decimales
-                    // ============================================
                     libro.TamañoArchivo = Math.Round((decimal)archivoPdf.Length / (1024 * 1024), 2);
 
                     // Subir PDF a Cloudinary
@@ -163,10 +156,8 @@ namespace Scriptum.Controllers
                     return View(libro);
                 }
 
-                // Asignar fecha de subida
                 libro.FechaSubida = DateTime.Now;
 
-                // Guardar en la base de datos
                 _context.Add(libro);
                 await _context.SaveChangesAsync();
 
