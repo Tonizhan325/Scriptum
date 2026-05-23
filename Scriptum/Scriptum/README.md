@@ -40,17 +40,177 @@ Antes de comenzar, necesitas tener instalado:
 - **Git** - Para clonar el repositorio
 - **Cuenta gratuita en Cloudinary** - Para el almacenamiento de archivos (PDF e imágenes)
 
-## Instalación y Configuración
+## Instalacion y Configuracion
 
-Primero clona el repositorio con git clone y entra en la carpeta del proyecto. Luego restaura los paquetes NuGet con dotnet restore. Crea una base de datos en PostgreSQL llamada ScriptumDB. Configura la cadena de conexión en appsettings.Development.json o usando User Secrets con dotnet user-secrets. Para Cloudinary, regístrate en cloudinary.com, obtén tu CloudinaryUrl desde el Dashboard y configúralo también con user secrets. Aplica las migraciones con dotnet ef migrations add InitialCreate y dotnet ef database update. Finalmente ejecuta la aplicación con dotnet run. La aplicación estará disponible en http://localhost:5000 y https://localhost:5001.
+Sigue estos pasos para instalar y ejecutar el proyecto en Visual Studio Code:
 
-## Estructura del Proyecto
+### Paso 1: Clonar el repositorio
 
-La carpeta Controllers contiene LibrosController.cs para el CRUD de libros, CatalogoController.cs para visualización y búsqueda, y HomeController.cs para la página principal. La carpeta Models contiene los modelos Libro.cs, Usuario.cs que hereda de IdentityUser con clave int, Genero.cs, Reseña.cs, Subida.cs y Descarga.cs. La carpeta Views contiene las vistas para Libros como Index, Create, Edit y Details, más Catalogo/Index.cshtml y las vistas compartidas en Shared. La carpeta Data contiene ApplicationDbContext.cs. También hay Migrations, wwwroot para archivos estáticos, Program.cs, appsettings.json y Scriptum.csproj.
+Abre Visual Studio Code y presiona Ctrl + Shift + P (Windows/Linux) o Cmd + Shift + P (Mac). Escribe "Git: Clone" y selecciona la opcion. Ingresa la URL del repositorio y elige la carpeta donde deseas guardar el proyecto. Alternativamente, abre la terminal integrada de VS Code con Ctrl + Ñ y ejecuta:
+
+- git clone https://github.com/tu-usuario/scriptum.git
+- cd scriptum
+
+### Paso 2: Abrir el proyecto en Visual Studio Code
+
+Una vez clonado, abre la carpeta del proyecto en VS Code seleccionando Archivo > Abrir carpeta.
+
+### Paso 3: Restaurar paquetes NuGet
+
+Abre la terminal integrada con Ctrl + Ñ y ejecuta:
+
+- dotnet restore
+
+### Paso 4: Instalar herramientas Entity Framework Core
+
+- dotnet tool install --global dotnet-ef
+
+### Paso 5: Crear la base de datos en PostgreSQL
+
+Abre pgAdmin o la terminal de PostgreSQL y crea la base de datos:
+
+- CREATE DATABASE ScriptumDB;
+
+### Paso 6: Configurar la cadena de conexion
+
+En Visual Studio Code, crea un archivo en la raiz del proyecto llamado `appsettings.Development.json` con el siguiente contenido:
+
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=ScriptumDB;Username=postgres;Password=tu_contraseña"
+  }
+}
+
+Reemplaza `tu_contraseña` con la contraseña de tu usuario de PostgreSQL.
+
+### Paso 7: Configurar Cloudinary
+
+En el mismo archivo `appsettings.Development.json`, agrega la configuracion de Cloudinary. El archivo completo quedaria asi:
+
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=ScriptumDB;Username=postgres;Password=tu_contraseña"
+  },
+  "CloudinarySettings": {
+    "CloudinaryUrl": "cloudinary://tu_api_key:tu_api_secret@tu_cloud_name"
+  }
+}
+
+Para obtener tu Cloudinary URL:
+1. Ve a cloudinary.com e inicia sesion
+2. En el Dashboard, busca "Account Details" o "API Environment variable"
+3. Copia la URL que se ve similar a: `cloudinary://123456789123456:abc123def456ghi789jkl@mi-super-cloud`
+4. Pega esa URL en el campo `CloudinaryUrl`
+
+### Paso 8: Aplicar las migraciones a la base de datos
+
+En la terminal integrada de VS Code, ejecuta estos comandos en orden:
+
+- dotnet ef migrations add InitialCreate
+- dotnet ef database update
+
+Si aparece un error diciendo que no se encuentra el comando "dotnet-ef", cierra y vuelve a abrir la terminal de VS Code, y repite los comandos. Cuando veas el mensaje "Done." o "Aplicando migracion... Hecho", significa que la base de datos se creo correctamente.
+
+### Paso 9: Ejecutar la aplicacion
+
+En la terminal integrada de VS Code, ejecuta:
+
+- dotnet run
+
+Espera a que aparezca un mensaje similar a:
+
+Now listening on: http://localhost:5000
+Now listening on: https://localhost:5001
+
+La aplicacion ya esta corriendo. Para abrirla, mantén presionada la tecla Ctrl (Windows/Linux) o Cmd (Mac) y haz clic en cualquiera de las dos direcciones que aparecen en la terminal. Para detener la aplicacion, presiona Ctrl + C en la terminal.
+
+### Extensiones recomendadas para Visual Studio Code
+
+Instala las siguientes extensiones:
+- C# Dev Kit (Microsoft)
+- C# Extensions (jchannon)
+- PostgreSQL (Chris Kolkman)
+- NuGet Gallery (pcislo)
+- GitLens (GitKraken)
+
+### Solucion de problemas comunes en VS Code
+
+Error: dotnet-ef no se reconoce como comando: Ejecuta dotnet tool install --global dotnet-ef y reinicia VS Code.
+
+Error: No se puede conectar a PostgreSQL: Verifica que PostgreSQL este ejecutandose. En Windows busca "Services" y asegurate que "postgresql" este iniciado. En Mac/Linux ejecuta sudo systemctl start postgresql.
+
+Error: La base de datos no se crea: Verifica que la cadena de conexion en appsettings.Development.json sea correcta y que la contraseña no tenga errores.
+
+### Credenciales de admin
+
+- Email: admin@empresa.com
+- Contraseña: Admin-123
+
+##Estructura del Proyecto
+
+Scriptum
+├── Controllers
+│   ├── LibrosController.cs
+│   ├── CatalogoController.cs
+│   ├── HomeController.cs
+│   ├── UsuariosController.cs
+│   ├── MisDatosController.cs
+│   └── GenerosController.cs
+│
+├── Models
+│   ├── Libro.cs
+│   ├── Usuario.cs
+│   ├── Genero.cs
+│   ├── Reseña.cs
+│   ├── Subida.cs
+│   └── Descarga.cs
+│
+├── Views
+│   ├── Libros
+│   │   ├── Index.cshtml
+│   │   ├── Create.cshtml
+│   │   ├── Edit.cshtml
+│   │   └── Details.cshtml
+│   ├── Catalogo
+│   │   └── Index.cshtml
+│   ├── Usuarios
+│   │   ├── Index.cshtml
+│   │   ├── Create.cshtml
+│   │   ├── Edit.cshtml
+│   │   └── Details.cshtml
+│   ├── Generos
+│   │   ├── Index.cshtml
+│   │   ├── Create.cshtml
+│   │   ├── Edit.cshtml
+│   │   └── Details.cshtml
+│   ├── MisDatos
+│   │   ├── Create.cshtml
+│   │   ├── Edit.cshtml
+│   └── Shared
+│       ├── _Layout.cshtml
+│       └── _ValidationScriptsPartial.cshtml
+│
+├── Data
+│   └── ApplicationDbContext.cs
+│
+├── Migrations
+│   └── (archivos de migracion)
+│
+├── wwwroot
+│   ├── css
+│   ├── js
+│   └── images
+│
+├── Program.cs
+├── appsettings.json
+├── SeedData.cs
+├── Utils.cs
+├── PaginatedList.cs
+└── Scriptum.csproj
 
 ## Uso
 
-Para crear un nuevo libro, haz clic en "Nuevo Libro", completa el formulario con título, descripción, idioma, autor, tipo y género, selecciona un archivo PDF y opcionalmente una imagen de portada, luego haz clic en "Guardar". El tamaño del archivo se calcula automáticamente en megabytes.
+Para subir un nuevo libro, haz clic en tu perfil registrado y dale a "Subir Libro", completa el formulario con título, descripción, idioma, autor, tipo y género, selecciona un archivo PDF y opcionalmente una imagen de portada, luego haz clic en "Guardar". El tamaño del archivo se calcula automáticamente en megabytes.
 
 Para editar un libro, haz clic en "Editar" en el listado, modifica los campos necesarios, y si quieres cambiar el PDF selecciona un nuevo archivo, si quieres cambiar la portada selecciona una nueva imagen. Los campos de archivo son independientes: puedes cambiar solo el PDF, solo la imagen, o ambos. Luego haz clic en "Guardar cambios".
 
@@ -58,9 +218,10 @@ Para buscar libros, usa el buscador en la página principal filtrando por títul
 
 ## Modelo de Datos
 
-Las principales entidades son Usuario que hereda de IdentityUser con clave primaria int, Libro que almacena título, autor, tamaño del archivo como decimal, URL del PDF y enlace de la imagen, Genero para categorías, y Reseña para opiniones de usuarios.
+Las principales entidades son Usuario que hereda de IdentityUser con clave primaria int, Libro que almacena título, autor, tamaño del archivo como decimal, URL del PDF y enlace de la imagen y Género para categorías.
 
-Las relaciones son: un usuario puede subir muchos libros, muchos libros pertenecen a un género, y un libro puede tener muchas reseñas.
+Las relaciones son: un usuario puede subir muchos libros, muchos libros pertenecen a un género, y un libro puede solo tener
+un género
 
 ## Solución de Problemas Comunes
 
