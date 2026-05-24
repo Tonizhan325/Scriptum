@@ -36,6 +36,23 @@
         display: flex;
         gap: 1rem;
     }
+
+    .btn-pagina {
+        border: 1.5px solid #2C3E50;
+        color: #2C3E50;
+        background: transparent;
+    }
+
+    .btn-pagina:hover {
+        background: rgba(44, 62, 80, 0.1);
+        color: #2C3E50;
+    }
+
+    .btn-pagina-activa {
+        background-color: #2C3E50;
+        border: 1.5px solid #2C3E50;
+        color: white;
+    }
 </style>
 
 <aside id="filtro-sidebar">
@@ -125,11 +142,11 @@
         @for (int i = 1; i <= Model.TotalPaginas; i++)
         {
             <a asp-action="Index"
-               asp-route-pagina="@i"
-               asp-route-buscar="@Model.FiltroBusqueda"
-               asp-route-generoId="@Model.GeneroSeleccionado"
-               asp-route-tipoRecurso="@Context.Request.Query["tipoRecurso"]"
-               class="btn @(i == Model.PaginaActual ? "btn-primary" : "btn-outline-primary") me-1">
+            asp-route-pagina="@i"
+            asp-route-buscar="@Model.FiltroBusqueda"
+            asp-route-generoId="@Model.GeneroSeleccionado"
+            asp-route-tipoRecurso="@Context.Request.Query["tipoRecurso"]"
+            class="btn me-1 @(i == Model.PaginaActual ? "btn-pagina-activa" : "btn-pagina")">
                 @i
             </a>
         }

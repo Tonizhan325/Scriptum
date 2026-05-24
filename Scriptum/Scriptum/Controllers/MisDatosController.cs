@@ -43,7 +43,6 @@ namespace Scriptum.Controllers
         // GET: MisDatos/Edit
         public async Task<IActionResult> Edit()
         {
-            // Se seleccionan los datos del usuario correspondiente al usuario actual
             string? emailUsuario = User.Identity.Name;
             Usuario? empleado = await _context.Usuarios
             .Where(e => e.Email == emailUsuario)
