@@ -26,22 +26,18 @@ namespace Scriptum.Controllers
         {
             int pageSize = 10;
 
-            // Guardar los parámetros de búsqueda en ViewData
             ViewData["BusquedaActual"] = strCadenaBusqueda;
 
             // Cargar datos de los libros como IQueryable
             var usuarios = _context.Usuarios.AsQueryable();
 
-            // Aplicar filtros si existen
             if (!String.IsNullOrEmpty(strCadenaBusqueda))
             {
                 usuarios = usuarios.Where(s => s.Nombre.Contains(strCadenaBusqueda));
             }
 
-            // ORDENAR SIEMPRE por FechaSubida de forma descendente
             usuarios = usuarios.OrderByDescending(s => s.fechaRegistro);
 
-            // Crear la lista paginada
             return View(await PaginatedList<Usuario>.CreateAsync(
                 usuarios.AsNoTracking(),
                 pageNumber ?? 1,
